@@ -74,6 +74,25 @@
   }
   .back-link:hover { opacity: 1; }
 
+  .nav { display: flex; align-items: center; gap: 18px; }
+  .cart-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--cream);
+    opacity: 0.92;
+    transition: opacity .15s ease;
+  }
+  .cart-link:hover { opacity: 1; }
+  .badge {
+    background: var(--gold); color: #3a2a12;
+    min-width: 20px; height: 20px; padding: 0 6px;
+    border-radius: 999px; font-size: 12px; font-weight: 800;
+    display: inline-flex; align-items: center; justify-content: center;
+  }
+
   /* Layout */
   .wrap {
     max-width: 1040px;
@@ -301,10 +320,17 @@
       <span class="mark">❀</span>
       <span>قدح</span>
     </a>
-    <a class="back-link" href="index.html">
-      <span>الرجوع للكتالوج</span>
-      <span aria-hidden="true">←</span>
-    </a>
+    <nav class="nav">
+      <a class="cart-link" href="cart.html">
+        <span aria-hidden="true">🛒</span>
+        <span>السلة</span>
+        <span class="badge" data-cart-count style="display:none">0</span>
+      </a>
+      <a class="back-link" href="index.html">
+        <span>الرجوع للكتالوج</span>
+        <span aria-hidden="true">←</span>
+      </a>
+    </nav>
   </header>
 
   <main class="wrap">
@@ -370,6 +396,7 @@
 
   <div class="toast" id="toast"></div>
 
+<script src="cart.js"></script>
 <script>
   // ===== الإعداد =====
   // استخدم نفس القيم الموجودة في index.html بالضبط.
@@ -428,7 +455,10 @@
     return rows[0] || null;
   }
 
+  let currentProduct = null;
+
   function renderProduct(p) {
+    currentProduct = p;
     document.title = (p.name_ar || "منتج") + " · قدح";
 
     // الصورة (image_url رابط كامل)
@@ -478,7 +508,7 @@
     $("product").style.display = "grid";
   }
 
-  // ===== الكمية (شكل جاهز، تُربط بالسلة لاحقًا) =====
+  // ===== الكمية =====
   let qty = 1;
   $("qMinus").addEventListener("click", () => {
     if (qty > 1) qty--;
@@ -490,9 +520,10 @@
   });
 
   // ===== أضف للسلة =====
-  // TODO: يُربط فعليًا في خطوة السلة القادمة (إضافة العنصر + الكمية إلى السلة).
   $("addToCart").addEventListener("click", () => {
-    toast("سيتم تفعيل السلة في الخطوة القادمة");
+    if (!currentProduct) return;
+    Cart.add(currentProduct.id, qty);
+    toast("أُضيف إلى السلة (" + qty + ")");
   });
 
   // ===== التشغيل =====
