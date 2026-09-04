@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>قدح · تفاصيل المنتج</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --cream: #F6EEE1;
+    --cream-2: #EFE4D2;
+    --card: #FFFDF9;
+    --burgundy: #6E1F2C;
+    --burgundy-dark: #501521;
+    --gold: #B08A4E;
+    --ink: #382822;
+    --muted: #8C7C71;
+    --line: #E6DAC7;
+    --shadow: 0 18px 40px rgba(80, 21, 33, 0.10);
+    --radius: 18px;
+  }
+
+  * { box-sizing: border-box; }
+
+  html, body { margin: 0; padding: 0; }
+
+  body {
+    font-family: "Tajawal", system-ui, sans-serif;
+    background: var(--cream);
+    color: var(--ink);
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  a { color: inherit; text-decoration: none; }
+
+  /* Header */
+  .topbar {
+    background: var(--burgundy);
+    color: var(--cream);
+    padding: 14px 22px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 800;
+    font-size: 24px;
+    letter-spacing: 1px;
+  }
+  .brand .mark {
+    width: 34px; height: 34px;
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    display: grid; place-items: center;
+    color: var(--gold);
+    font-size: 16px;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+    font-size: 15px;
+    color: var(--cream);
+    opacity: 0.92;
+    transition: opacity .15s ease;
+  }
+  .back-link:hover { opacity: 1; }
+
+  /* Layout */
+  .wrap {
+    max-width: 1040px;
+    margin: 0 auto;
+    padding: 34px 22px 70px;
+  }
+
+  /* Loading */
+  .loading {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+  .sk {
+    background: linear-gradient(100deg, var(--cream-2) 30%, #f5ecdd 50%, var(--cream-2) 70%);
+    background-size: 200% 100%;
+    animation: shimmer 1.3s infinite;
+    border-radius: 12px;
+  }
+  .sk-img { aspect-ratio: 1 / 1; border-radius: var(--radius); }
+  .sk-line { height: 20px; margin-bottom: 16px; }
+  .sk-line.lg { height: 34px; width: 70%; }
+  .sk-line.sm { width: 45%; }
+  @keyframes shimmer { to { background-position: -200% 0; } }
+
+  /* Product */
+  .product {
+    display: none;
+    grid-template-columns: 1.05fr 1fr;
+    gap: 48px;
+    align-items: start;
+  }
+  .media {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 14px;
+    box-shadow: var(--shadow);
+    position: relative;
+  }
+  .media::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border: 1px solid rgba(176, 138, 78, 0.28);
+    border-radius: 12px;
+    pointer-events: none;
+  }
+  .media img {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+  }
+
+  .details { padding-top: 6px; }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
+  .chip {
+    font-size: 13px;
+    font-weight: 700;
+    padding: 5px 13px;
+    border-radius: 999px;
+    background: rgba(110, 31, 44, 0.08);
+    color: var(--burgundy);
+    border: 1px solid rgba(110, 31, 44, 0.16);
+  }
+  .chip.gold {
+    background: rgba(176, 138, 78, 0.12);
+    color: #8a6a35;
+    border-color: rgba(176, 138, 78, 0.30);
+  }
+
+  .name-ar {
+    font-size: 34px;
+    font-weight: 800;
+    line-height: 1.3;
+    margin: 0 0 4px;
+    color: var(--ink);
+  }
+  .name-en {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--muted);
+    margin: 0 0 20px;
+    direction: ltr;
+    text-align: right;
+  }
+
+  .price {
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--burgundy);
+    margin: 0 0 26px;
+  }
+  .price small { font-size: 17px; font-weight: 700; color: var(--muted); }
+
+  .divider { height: 1px; background: var(--line); margin: 0 0 22px; }
+
+  .section-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--muted);
+    margin: 0 0 6px;
+  }
+  .note {
+    font-size: 16px;
+    color: var(--ink);
+    margin: 0 0 26px;
+    max-width: 62ch;
+  }
+
+  .meta {
+    font-size: 14px;
+    color: var(--muted);
+    margin: 0 0 26px;
+  }
+
+  /* Purchase row */
+  .buy {
+    display: flex;
+    align-items: stretch;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .qty {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--card);
+    overflow: hidden;
+  }
+  .qty button {
+    width: 44px; height: 52px;
+    border: 0; background: transparent;
+    font-size: 22px; color: var(--burgundy);
+    cursor: pointer;
+    font-family: inherit;
+    transition: background .12s ease;
+  }
+  .qty button:hover { background: rgba(110, 31, 44, 0.06); }
+  .qty span {
+    min-width: 46px;
+    text-align: center;
+    font-weight: 700;
+    font-size: 18px;
+  }
+
+  .add-btn {
+    flex: 1;
+    min-width: 200px;
+    height: 52px;
+    border: 0;
+    border-radius: 12px;
+    background: var(--burgundy);
+    color: var(--cream);
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 17px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background .15s ease, transform .05s ease;
+  }
+  .add-btn:hover { background: var(--burgundy-dark); }
+  .add-btn:active { transform: translateY(1px); }
+  .add-btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+  /* Error / not found */
+  .state {
+    display: none;
+    text-align: center;
+    padding: 70px 20px;
+    max-width: 460px;
+    margin: 0 auto;
+  }
+  .state .icon { font-size: 44px; margin-bottom: 12px; }
+  .state h2 { font-size: 24px; margin: 0 0 8px; color: var(--burgundy); }
+  .state p { color: var(--muted); margin: 0 0 22px; }
+  .state .cta {
+    display: inline-block;
+    background: var(--burgundy);
+    color: var(--cream);
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: 700;
+  }
+
+  /* Toast */
+  .toast {
+    position: fixed;
+    bottom: 26px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--ink);
+    color: var(--cream);
+    padding: 13px 22px;
+    border-radius: 12px;
+    font-weight: 500;
+    box-shadow: var(--shadow);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .2s ease, transform .2s ease;
+    z-index: 50;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  @media (max-width: 760px) {
+    .product, .loading { grid-template-columns: 1fr; gap: 26px; }
+    .name-ar { font-size: 28px; }
+    .price { font-size: 26px; }
+    .wrap { padding-top: 24px; }
+  }
+</style>
+</head>
+<body>
+
+  <header class="topbar">
+    <a class="brand" href="index.html">
+      <span class="mark">❀</span>
+      <span>قدح</span>
+    </a>
+    <a class="back-link" href="index.html">
+      <span>الرجوع للكتالوج</span>
+      <span aria-hidden="true">←</span>
+    </a>
+  </header>
+
+  <main class="wrap">
+
+    <!-- حالة التحميل -->
+    <div class="loading" id="loading">
+      <div class="sk sk-img"></div>
+      <div>
+        <div class="sk sk-line sm"></div>
+        <div class="sk sk-line lg"></div>
+        <div class="sk sk-line"></div>
+        <div class="sk sk-line"></div>
+        <div class="sk sk-line sm"></div>
+      </div>
+    </div>
+
+    <!-- المنتج -->
+    <article class="product" id="product">
+      <div class="media">
+        <img id="pImage" alt="" />
+      </div>
+
+      <div class="details">
+        <div class="chips" id="pChips"></div>
+
+        <h1 class="name-ar" id="pNameAr"></h1>
+        <p class="name-en" id="pNameEn"></p>
+
+        <p class="price" id="pPrice"></p>
+
+        <div class="divider"></div>
+
+        <div id="pNoteWrap">
+          <p class="section-title">الوصف</p>
+          <p class="note" id="pNote"></p>
+        </div>
+
+        <p class="meta" id="pCode"></p>
+
+        <div class="buy">
+          <div class="qty" aria-label="الكمية">
+            <button type="button" id="qMinus" aria-label="إنقاص">−</button>
+            <span id="qVal">1</span>
+            <button type="button" id="qPlus" aria-label="زيادة">+</button>
+          </div>
+          <button type="button" class="add-btn" id="addToCart">
+            <span aria-hidden="true">🛒</span>
+            <span>أضف للسلة</span>
+          </button>
+        </div>
+      </div>
+    </article>
+
+    <!-- لا يوجد منتج / خطأ -->
+    <div class="state" id="state">
+      <div class="icon">🌿</div>
+      <h2 id="stateTitle">لم يتم العثور على المنتج</h2>
+      <p id="stateMsg">الرابط غير صحيح أو المنتج لم يعد متوفرًا.</p>
+      <a class="cta" href="index.html">العودة للكتالوج</a>
+    </div>
+
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  // ===== الإعداد =====
+  // استخدم نفس القيم الموجودة في index.html بالضبط.
+  const SUPABASE_URL = "https://tsqkqoibfxachknfmzjj.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_JyCAQnMnltVq9nESIZjNew_St2FI6Ch"; // publishable / anon key
+
+  // ===== أدوات =====
+  const $ = (id) => document.getElementById(id);
+
+  function formatPrice(p) {
+    if (p == null || isNaN(p)) return "";
+    return new Intl.NumberFormat("en-US").format(p) + " د.ع";
+  }
+
+  function showState(title, msg) {
+    $("loading").style.display = "none";
+    $("product").style.display = "none";
+    if (title) $("stateTitle").textContent = title;
+    if (msg) $("stateMsg").textContent = msg;
+    $("state").style.display = "block";
+  }
+
+  let toastTimer;
+  function toast(text) {
+    const t = $("toast");
+    t.textContent = text;
+    t.classList.add("show");
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => t.classList.remove("show"), 2400);
+  }
+
+  // صورة بديلة إذا فشل تحميل صورة المنتج
+  const FALLBACK_IMG =
+    "data:image/svg+xml;utf8," +
+    encodeURIComponent(
+      '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600"><rect width="600" height="600" fill="#EFE4D2"/><text x="50%" y="50%" font-size="120" text-anchor="middle" dominant-baseline="central">❀</text></svg>'
+    );
+
+  // ===== قراءة المنتج =====
+  async function loadProduct(id) {
+    const url =
+      SUPABASE_URL +
+      "/rest/v1/catalog_public?id=eq." +
+      encodeURIComponent(id) +
+      "&select=*&limit=1";
+
+    const res = await fetch(url, {
+      headers: {
+        apikey: SUPABASE_KEY,
+        Authorization: "Bearer " + SUPABASE_KEY,
+      },
+    });
+
+    if (!res.ok) throw new Error("HTTP " + res.status);
+    const rows = await res.json();
+    return rows[0] || null;
+  }
+
+  function renderProduct(p) {
+    document.title = (p.name_ar || "منتج") + " · قدح";
+
+    // الصورة (image_url رابط كامل)
+    const img = $("pImage");
+    img.src = p.image_url || FALLBACK_IMG;
+    img.alt = p.name_ar || "";
+    img.onerror = () => { img.onerror = null; img.src = FALLBACK_IMG; };
+
+    // الشرائح: المناسبة + التصنيف
+    const chips = $("pChips");
+    chips.innerHTML = "";
+    if (p.occasion) {
+      const c = document.createElement("span");
+      c.className = "chip gold";
+      c.textContent = p.occasion;
+      chips.appendChild(c);
+    }
+    if (p.category) {
+      const c = document.createElement("span");
+      c.className = "chip";
+      c.textContent = p.category;
+      chips.appendChild(c);
+    }
+
+    // الاسم
+    $("pNameAr").textContent = p.name_ar || "";
+    const nameEn = $("pNameEn");
+    if (p.name_en) { nameEn.textContent = p.name_en; nameEn.style.display = "block"; }
+    else nameEn.style.display = "none";
+
+    // السعر
+    $("pPrice").textContent = formatPrice(p.price);
+
+    // الوصف
+    if (p.note && String(p.note).trim()) {
+      $("pNote").textContent = p.note;
+      $("pNoteWrap").style.display = "block";
+    } else {
+      $("pNoteWrap").style.display = "none";
+    }
+
+    // رقم الصنف
+    $("pCode").textContent = p.code != null ? "رقم الصنف: " + p.code : "";
+
+    // إظهار المنتج
+    $("loading").style.display = "none";
+    $("product").style.display = "grid";
+  }
+
+  // ===== الكمية (شكل جاهز، تُربط بالسلة لاحقًا) =====
+  let qty = 1;
+  $("qMinus").addEventListener("click", () => {
+    if (qty > 1) qty--;
+    $("qVal").textContent = qty;
+  });
+  $("qPlus").addEventListener("click", () => {
+    qty++;
+    $("qVal").textContent = qty;
+  });
+
+  // ===== أضف للسلة =====
+  // TODO: يُربط فعليًا في خطوة السلة القادمة (إضافة العنصر + الكمية إلى السلة).
+  $("addToCart").addEventListener("click", () => {
+    toast("سيتم تفعيل السلة في الخطوة القادمة");
+  });
+
+  // ===== التشغيل =====
+  (async function init() {
+    const id = new URLSearchParams(location.search).get("id");
+
+    if (!id) {
+      showState("الرابط غير مكتمل", "لم يُحدد أي منتج. ارجع للكتالوج واختر منتجًا.");
+      return;
+    }
+
+    try {
+      const product = await loadProduct(id);
+      if (!product) {
+        showState("لم يتم العثور على المنتج", "المنتج غير موجود أو لم يعد متوفرًا.");
+        return;
+      }
+      renderProduct(product);
+    } catch (err) {
+      console.error(err);
+      showState("تعذّر تحميل المنتج", "صار خطأ أثناء جلب البيانات. جرّب تحديث الصفحة.");
+    }
+  })();
+</script>
+</body>
+</html>
