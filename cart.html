@@ -163,6 +163,66 @@
   }
   .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
 
+  /* Checkout modal */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(56,40,34,.55);
+    display: none; align-items: center; justify-content: center;
+    padding: 20px; z-index: 60;
+  }
+  .modal-overlay.show { display: flex; }
+  .modal {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    width: 100%; max-width: 520px;
+    max-height: 90vh; overflow-y: auto;
+    padding: 26px;
+  }
+  .modal h2 { margin: 0 0 4px; font-size: 22px; color: var(--burgundy); }
+  .modal .sub { color: var(--muted); font-size: 14px; margin: 0 0 20px; }
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-weight: 700; font-size: 14px; margin-bottom: 6px; }
+  .field label .req { color: var(--burgundy); }
+  .field input, .field textarea, .field select {
+    width: 100%; font-family: inherit; font-size: 15px;
+    padding: 11px 12px; border: 1px solid var(--line);
+    border-radius: 10px; background: var(--cream); color: var(--ink);
+  }
+  .field textarea { resize: vertical; min-height: 64px; }
+  .field input:focus, .field textarea:focus, .field select:focus {
+    outline: 2px solid var(--gold); outline-offset: 1px; border-color: var(--gold);
+  }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .form-section-title {
+    font-weight: 800; font-size: 15px; color: var(--burgundy);
+    margin: 18px 0 10px; padding-bottom: 6px; border-bottom: 1px solid var(--line);
+  }
+  .form-error { color: var(--burgundy); font-size: 14px; font-weight: 700; margin: 8px 0 0; min-height: 20px; }
+  .modal-actions { display: flex; gap: 12px; margin-top: 20px; }
+  .btn-primary {
+    flex: 1; height: 50px; border: 0; border-radius: 12px;
+    background: var(--burgundy); color: var(--cream);
+    font-family: inherit; font-weight: 700; font-size: 16px; cursor: pointer;
+  }
+  .btn-primary:hover { background: var(--burgundy-dark); }
+  .btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+  .btn-ghost {
+    height: 50px; padding: 0 20px; border: 1px solid var(--line);
+    border-radius: 12px; background: transparent; color: var(--ink);
+    font-family: inherit; font-weight: 700; font-size: 16px; cursor: pointer;
+  }
+  .btn-ghost:hover { background: var(--cream-2); }
+  .order-success { text-align: center; padding: 10px 0; }
+  .order-success .icon { font-size: 46px; }
+  .order-success h2 { color: var(--burgundy); margin: 6px 0; }
+  .order-success .code {
+    display: inline-block; margin: 8px 0 4px; font-size: 26px; font-weight: 800;
+    color: var(--burgundy); letter-spacing: 1px;
+  }
+  .order-success .total { font-size: 18px; font-weight: 700; margin: 6px 0 20px; }
+
   @media (max-width: 760px) {
     .grid { grid-template-columns: 1fr; gap: 22px; }
     .summary { position: static; }
@@ -170,6 +230,7 @@
     .line img { width: 76px; height: 76px; }
     .line .line-total { grid-column: 2; text-align: right; }
   }
+  @media (max-width: 520px) { .field-row { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -231,6 +292,93 @@
     </div>
   </main>
 
+  <!-- نافذة إتمام الطلب -->
+  <div class="modal-overlay" id="checkoutModal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
+    <div class="modal">
+      <!-- الفورم -->
+      <div id="checkoutForm">
+        <h2 id="checkoutTitle">إتمام الطلب</h2>
+        <p class="sub">عبّي بيانات الطلب. الأسعار تُحسب من الخادم عند التأكيد.</p>
+
+        <div class="form-section-title">بيانات صاحب الطلب</div>
+        <div class="field">
+          <label for="c_name">الاسم <span class="req">*</span></label>
+          <input id="c_name" type="text" autocomplete="name" />
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="c_phone">رقم الهاتف <span class="req">*</span></label>
+            <input id="c_phone" type="tel" inputmode="tel" autocomplete="tel" />
+          </div>
+          <div class="field">
+            <label for="c_email">البريد (اختياري)</label>
+            <input id="c_email" type="email" autocomplete="email" />
+          </div>
+        </div>
+
+        <div class="form-section-title">بيانات المستلم</div>
+        <div class="field-row">
+          <div class="field">
+            <label for="r_name">اسم المستلم <span class="req">*</span></label>
+            <input id="r_name" type="text" />
+          </div>
+          <div class="field">
+            <label for="r_phone">هاتف المستلم <span class="req">*</span></label>
+            <input id="r_phone" type="tel" inputmode="tel" />
+          </div>
+        </div>
+
+        <div class="form-section-title">التوصيل</div>
+        <div class="field">
+          <label for="d_address">العنوان <span class="req">*</span></label>
+          <textarea id="d_address"></textarea>
+        </div>
+        <div class="field-row">
+          <div class="field">
+            <label for="d_date">يوم التوصيل (اختياري)</label>
+            <input id="d_date" type="date" />
+          </div>
+          <div class="field">
+            <label for="d_slot">الفترة (اختياري)</label>
+            <select id="d_slot">
+              <option value="">اختر</option>
+              <option value="صباحًا">صباحًا</option>
+              <option value="ظهرًا">ظهرًا</option>
+              <option value="مساءً">مساءً</option>
+            </select>
+          </div>
+        </div>
+        <div class="field">
+          <label for="d_notes">ملاحظات التوصيل (اختياري)</label>
+          <textarea id="d_notes"></textarea>
+        </div>
+        <div class="field">
+          <label for="gift">رسالة الهدية (اختياري)</label>
+          <textarea id="gift"></textarea>
+        </div>
+
+        <p class="form-error" id="formError"></p>
+
+        <div class="modal-actions">
+          <button type="button" class="btn-primary" id="confirmOrder">تأكيد الطلب</button>
+          <button type="button" class="btn-ghost" id="cancelCheckout">رجوع</button>
+        </div>
+      </div>
+
+      <!-- شاشة النجاح -->
+      <div id="checkoutSuccess" class="order-success" style="display:none">
+        <div class="icon">🌸</div>
+        <h2>تم استلام طلبك</h2>
+        <div class="code" id="successCode">QDH-0000</div>
+        <div class="total" id="successTotal"></div>
+        <p class="sub">راح نتواصل وياك لتأكيد الطلب والدفع.</p>
+        <div class="modal-actions">
+          <a class="btn-primary" href="index.html" style="display:grid;place-items:center;text-decoration:none">متابعة التسوّق</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="toast" id="toast"></div>
 
   <script src="cart.js"></script>
@@ -238,6 +386,7 @@
     // ===== الإعداد ===== استخدم نفس القيم الموجودة في index.html / product.html بالضبط.
     const SUPABASE_URL = "https://tsqkqoibfxachknfmzjj.supabase.co";
     const SUPABASE_KEY = "sb_publishable_JyCAQnMnltVq9nESIZjNew_St2FI6Ch"; // publishable / anon key
+    const CREATE_ORDER_URL = SUPABASE_URL + "/functions/v1/create_order";
 
     const $ = (id) => document.getElementById(id);
 
@@ -369,11 +518,100 @@
       render(); // إعادة الرسم بالبيانات المحدّثة
     });
 
-    // إتمام الطلب — يُربط فعليًا في الخطوة القادمة (إنشاء الطلب عبر Edge Function)
+    // ===== إتمام الطلب (ربط فعلي بـ Edge Function create_order) =====
+    function openCheckout() {
+      $("formError").textContent = "";
+      $("checkoutForm").style.display = "";
+      $("checkoutSuccess").style.display = "none";
+      $("checkoutModal").classList.add("show");
+    }
+    function closeCheckout() {
+      $("checkoutModal").classList.remove("show");
+    }
+
     $("checkout").addEventListener("click", () => {
-      // TODO: استدعاء Edge Function لإنشاء الطلب وتسعيره من طرف الخادم ثم الانتقال للدفع.
-      toast("سيتم تفعيل إتمام الطلب في الخطوة القادمة");
+      if (!Cart.all().length) { toast("السلة فارغة"); return; }
+      openCheckout();
     });
+    $("cancelCheckout").addEventListener("click", closeCheckout);
+    $("checkoutModal").addEventListener("click", (e) => {
+      if (e.target === $("checkoutModal")) closeCheckout(); // نقرة الخلفية تُغلق
+    });
+
+    async function confirmOrder() {
+      const lines = Cart.all(); // [{ id, qty }] — لا نرسل أي سعر
+      if (!lines.length) { $("formError").textContent = "السلة فارغة"; return; }
+
+      const payload = {
+        items: lines,
+        customer: {
+          name: $("c_name").value.trim(),
+          phone: $("c_phone").value.trim(),
+          email: $("c_email").value.trim() || null,
+        },
+        recipient: {
+          name: $("r_name").value.trim(),
+          phone: $("r_phone").value.trim(),
+        },
+        delivery: {
+          address: $("d_address").value.trim(),
+          notes: $("d_notes").value.trim() || null,
+          date: $("d_date").value || null,
+          slot: $("d_slot").value || null,
+        },
+        gift_message: $("gift").value.trim() || null,
+        addons: [],
+      };
+
+      // فحص مبدئي فقط (الخادم يعيد التحقق على أي حال)
+      if (!payload.customer.name || !payload.customer.phone) {
+        $("formError").textContent = "الرجاء إدخال الاسم ورقم الهاتف"; return;
+      }
+      if (!payload.recipient.name || !payload.recipient.phone) {
+        $("formError").textContent = "الرجاء إدخال اسم المستلم وهاتفه"; return;
+      }
+      if (!payload.delivery.address) {
+        $("formError").textContent = "الرجاء إدخال عنوان التوصيل"; return;
+      }
+
+      const btn = $("confirmOrder");
+      const label = btn.textContent;
+      btn.disabled = true;
+      btn.textContent = "جارٍ الإرسال…";
+      $("formError").textContent = "";
+
+      try {
+        const res = await fetch(CREATE_ORDER_URL, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            apikey: SUPABASE_KEY,
+            Authorization: "Bearer " + SUPABASE_KEY,
+          },
+          body: JSON.stringify(payload),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok || !data.ok) {
+          $("formError").textContent = "تعذّر إنشاء الطلب. " + (data.message || ("رمز " + res.status));
+          return;
+        }
+        const o = data.order;
+        Cart.clear();
+        $("successCode").textContent = o.order_code;
+        $("successTotal").textContent = "الإجمالي: " + formatPrice(o.total);
+        $("checkoutForm").style.display = "none";
+        $("checkoutSuccess").style.display = "";
+        render(); // الخلفية تصير "السلة فارغة"
+      } catch (err) {
+        console.error(err);
+        $("formError").textContent = "خطأ بالاتصال. حاول مرة ثانية.";
+      } finally {
+        btn.disabled = false;
+        btn.textContent = label;
+      }
+    }
+
+    $("confirmOrder").addEventListener("click", confirmOrder);
 
     // ===== التشغيل =====
     (async function init() {
