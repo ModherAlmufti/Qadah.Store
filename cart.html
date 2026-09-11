@@ -395,6 +395,14 @@
       return new Intl.NumberFormat("en-US").format(p) + " د.ع";
     }
 
+    // تاريخ اليوم محليًا بصيغة YYYY-MM-DD، لمنع اختيار يوم مضى
+    function todayStr() {
+      const t = new Date();
+      const m = String(t.getMonth() + 1).padStart(2, "0");
+      const day = String(t.getDate()).padStart(2, "0");
+      return t.getFullYear() + "-" + m + "-" + day;
+    }
+
     let toastTimer;
     function toast(text) {
       const t = $("toast");
@@ -521,6 +529,8 @@
     // ===== إتمام الطلب (ربط فعلي بـ Edge Function create_order) =====
     function openCheckout() {
       $("formError").textContent = "";
+      const dateEl = $("d_date");
+      if (dateEl) dateEl.min = todayStr(); // يمنع اختيار تاريخ سابق من المنتقي
       $("checkoutForm").style.display = "";
       $("checkoutSuccess").style.display = "none";
       $("checkoutModal").classList.add("show");
@@ -572,6 +582,9 @@
       }
       if (!payload.delivery.address) {
         $("formError").textContent = "الرجاء إدخال عنوان التوصيل"; return;
+      }
+      if (payload.delivery.date && payload.delivery.date < todayStr()) {
+        $("formError").textContent = "لا يمكن اختيار تاريخ توصيل في الماضي"; return;
       }
 
       const btn = $("confirmOrder");
