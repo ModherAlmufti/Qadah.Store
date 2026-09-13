@@ -3,297 +3,192 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>قدح · الكتالوج</title>
+<title>قدّاح · الكتالوج</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
 <style>
-  /* ===== إعدادات الألوان والخطوط ===== */
   :root{
-    --paper:      #F4EADB;  /* كريمي: خلفية الصفحة */
-    --card:       #FBF5EC;  /* كريمي أفتح: خلفية البطاقة */
-    --burgundy:   #6A1B2A;  /* عنابي: اللون الأساسي للعلامة */
-    --burgundy-2: #4E1220;  /* عنابي غامق: النصوص الأساسية */
-    --gold:       #A9834E;  /* ذهبي هادئ: لمسة فخامة */
-    --ink:        #33261F;  /* لون النص العام */
-    --muted:      #8B7B6A;  /* نص ثانوي */
-    --line:       #E4D6C2;  /* خطوط فاصلة */
-    --shadow:     0 10px 30px rgba(78, 18, 32, .08);
+    --navy:#01183a; --navy-dark:#000f28;
+    --rose:#dca096; --rose-strong:#c98578; --rose-soft:#f4e4df;
+    --cream-page:#fbf6ee; --cream:#f5ede0; --card:#fffdfa;
+    --ink:#24303c; --muted:#8f8781; --line:#ece2d4;
+    --shadow:0 14px 34px rgba(1,24,58,.08);
+    --radius:18px;
   }
 
-  *{ box-sizing: border-box; }
+  *{ box-sizing:border-box; }
   html, body{ margin:0; padding:0; }
-  body{
-    background: var(--paper);
-    color: var(--ink);
-    font-family: "Tajawal", system-ui, sans-serif;
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
-  a{ color: inherit; text-decoration: none; }
+  body{ background:var(--cream-page); color:var(--ink);
+    font-family:"Tajawal", system-ui, sans-serif; line-height:1.6; -webkit-font-smoothing:antialiased; }
+  a{ color:inherit; text-decoration:none; }
   img{ display:block; max-width:100%; }
 
-  /* ===== شريط تنبيه وضع العرض التجريبي ===== */
-  .devbar{
-    background: var(--burgundy-2);
-    color: #F4EADB;
-    text-align: center;
-    font-size: 13px;
-    padding: 8px 16px;
-  }
-  .devbar b{ color: #E6C99A; font-weight: 700; }
+  /* ===== شريط التوصيل + الترويسة (كريمية) ===== */
+  .deliverbar{ background:var(--navy); color:var(--cream); text-align:center;
+    font-size:13px; font-weight:500; padding:8px 16px; letter-spacing:.2px; }
+  .site-head{ background:var(--cream); border-bottom:1px solid var(--line); }
+  .head-inner{ max-width:1180px; margin:0 auto; padding:14px 24px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand__icon{ width:46px; height:46px; object-fit:contain; }
+  .brand__text{ display:flex; flex-direction:column; line-height:1; }
+  .brand__ar{ font-family:"Tajawal",sans-serif; font-weight:800; font-size:26px;
+    color:var(--navy); letter-spacing:.5px; }
+  .brand__en{ font-size:12px; font-weight:700; color:var(--rose-strong);
+    letter-spacing:4px; margin-top:4px; }
+  .head-nav{ display:flex; align-items:center; gap:16px; }
+  .head-nav a{ display:inline-flex; align-items:center; gap:6px; font-weight:700;
+    font-size:15px; color:var(--navy); opacity:.9; transition:opacity .15s ease; }
+  .head-nav a:hover{ opacity:1; }
+  .cart-link{ position:relative; }
+  .cart-ic{ width:24px; height:24px; stroke:var(--navy); fill:none; stroke-width:1.7; }
+  .cart-link .badge{ position:absolute; inset-block-start:-6px; inset-inline-start:-8px;
+    background:var(--rose-strong); color:#fff; min-width:18px; height:18px; padding:0 5px;
+    border-radius:999px; font-size:11px; font-weight:800;
+    display:inline-flex; align-items:center; justify-content:center; }
 
-  /* ===== الهيدر ===== */
-  .site-head{
-    background: var(--burgundy);
-    color: var(--paper);
-  }
-  .head-inner{
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 26px 24px 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 4px;
-  }
-  .brand__mark{
-    font-family: "Amiri", serif;
-    font-weight: 700;
-    font-size: clamp(40px, 7vw, 62px);
-    line-height: 1;
-    color: #FBF5EC;
-    letter-spacing: 1px;
-  }
-  .brand__mark::after{
-    content:"";
-    display:block;
-    width: 54px;
-    height: 2px;
-    background: var(--gold);
-    margin-top: 10px;
-  }
-  .brand__sub{
-    font-size: 15px;
-    color: #E7CFB0;
-    margin-top: 10px;
-    letter-spacing: .3px;
-  }
+  /* ===== شريط العرض التجريبي ===== */
+  .devbar{ background:var(--rose-soft); color:var(--navy); text-align:center;
+    font-size:13px; padding:8px 16px; }
+  .devbar b{ color:var(--rose-strong); font-weight:800; }
 
-  /* ===== شريط التحكم (بحث + تصنيفات) ===== */
-  .controls{
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 28px 24px 6px;
-  }
-  .search-wrap{
-    position: relative;
-    max-width: 460px;
-  }
-  .search{
-    width: 100%;
-    padding: 13px 46px 13px 16px;
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    background: var(--card);
-    font-family: inherit;
-    font-size: 15px;
-    color: var(--ink);
-    outline: none;
-    transition: border-color .15s ease;
-  }
-  .search:focus{ border-color: var(--burgundy); }
-  .search-wrap svg{
-    position: absolute;
-    inset-inline-end: 15px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 18px; height: 18px;
-    stroke: var(--muted);
-    pointer-events: none;
-  }
+  /* ===== القسم البطولي ===== */
+  .hero{ background:var(--cream); }
+  .hero__inner{ max-width:1180px; margin:0 auto; padding:34px 24px 46px;
+    display:grid; grid-template-columns:1.05fr .95fr; gap:40px; align-items:center; }
+  .hero__tag{ display:inline-block; background:var(--rose-soft); color:var(--rose-strong);
+    font-size:13px; font-weight:700; padding:6px 14px; border-radius:999px; }
+  .hero__title{ font-family:"Tajawal",sans-serif; font-weight:800;
+    font-size:clamp(38px,6vw,60px); line-height:1.1; color:var(--navy); margin:16px 0 12px; }
+  .hero__lead{ font-size:17px; color:var(--ink); max-width:44ch; margin:0 0 14px; }
+  .hero__en{ font-size:14px; font-weight:800; color:var(--rose-strong);
+    letter-spacing:3px; margin:0 0 22px; }
+  .hero__cta{ display:flex; gap:12px; flex-wrap:wrap; }
+  .btn{ display:inline-flex; align-items:center; justify-content:center; font-family:inherit;
+    font-weight:700; font-size:16px; padding:13px 26px; border-radius:12px; cursor:pointer;
+    border:1px solid transparent; transition:background .15s ease, color .15s ease, border-color .15s ease; }
+  .btn--navy{ background:var(--navy); color:var(--cream); }
+  .btn--navy:hover{ background:var(--navy-dark); }
+  .btn--ghost{ background:transparent; color:var(--navy); border-color:var(--navy); }
+  .btn--ghost:hover{ background:var(--navy); color:var(--cream); }
+  .hero__media{ position:relative; aspect-ratio:4/3; border-radius:22px; overflow:hidden;
+    box-shadow:var(--shadow); background:var(--rose-soft); }
+  .hero__media img{ width:100%; height:100%; object-fit:cover; }
+  .hero__media.is-empty{ background:var(--rose-soft) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><g fill='none' stroke='%2301183a' stroke-width='2' stroke-linecap='round' opacity='0.26'><circle cx='60' cy='46' r='12'/><path d='M60 34c-8-6-18 0-14 9M60 34c8-6 18 0 14 9M48 55c-9 2-12 13-3 16M72 55c9 2 12 13 3 16M60 58c-7 5-4 15 0 15 4 0 7-10 0-15Z'/><path d='M60 73v26M60 84c-8-2-15 3-18 10M60 90c8-2 15 3 18 10'/></g></svg>") center/120px no-repeat; }
 
-  .chips{
-    display: flex;
-    flex-wrap: wrap;
-    gap: 9px;
-    margin-top: 18px;
-  }
-  .chip{
-    font-family: inherit;
-    font-size: 14px;
-    padding: 7px 16px;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    background: transparent;
-    color: var(--burgundy-2);
-    cursor: pointer;
-    transition: background .15s ease, color .15s ease, border-color .15s ease;
-  }
-  .chip:hover{ border-color: var(--burgundy); }
-  .chip[aria-pressed="true"]{
-    background: var(--burgundy);
-    border-color: var(--burgundy);
-    color: #FBF5EC;
-  }
-
-  .count{
-    margin-top: 16px;
-    font-size: 14px;
-    color: var(--muted);
-  }
+  /* ===== شريط التحكم ===== */
+  .controls{ max-width:1180px; margin:0 auto; padding:28px 24px 6px; }
+  .search-wrap{ position:relative; max-width:460px; }
+  .search{ width:100%; padding:13px 46px 13px 16px; border:1px solid var(--line);
+    border-radius:12px; background:var(--card); font-family:inherit; font-size:15px;
+    color:var(--ink); outline:none; transition:border-color .15s ease; }
+  .search:focus{ border-color:var(--rose-strong); }
+  .search-wrap svg{ position:absolute; inset-inline-end:15px; top:50%; transform:translateY(-50%);
+    width:18px; height:18px; stroke:var(--muted); pointer-events:none; }
+  .chips{ display:flex; flex-wrap:wrap; gap:9px; margin-top:18px; }
+  .chip{ font-family:inherit; font-size:14px; padding:7px 16px; border-radius:999px;
+    border:1px solid var(--line); background:transparent; color:var(--navy); cursor:pointer;
+    transition:background .15s ease, color .15s ease, border-color .15s ease; }
+  .chip:hover{ border-color:var(--rose-strong); }
+  .chip[aria-pressed="true"]{ background:var(--rose); border-color:var(--rose); color:var(--navy); }
+  .count{ margin-top:16px; font-size:14px; color:var(--muted); }
 
   /* ===== شبكة المنتجات ===== */
-  .catalog{
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 8px 24px 60px;
-  }
-  .grid{
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(228px, 1fr));
-    gap: 22px;
-  }
+  .catalog{ max-width:1180px; margin:0 auto; padding:8px 24px 60px; }
+  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(228px,1fr)); gap:22px; }
+  .card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    overflow:hidden; display:flex; flex-direction:column; box-shadow:var(--shadow);
+    transition:transform .18s ease, box-shadow .18s ease; }
+  .card:hover{ transform:translateY(-3px); box-shadow:0 18px 40px rgba(1,24,58,.13); }
+  .card__media{ position:relative; aspect-ratio:1/1;
+    background:var(--rose-soft) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><g fill='none' stroke='%2301183a' stroke-width='2' stroke-linecap='round' opacity='0.26'><circle cx='60' cy='46' r='12'/><path d='M60 34c-8-6-18 0-14 9M60 34c8-6 18 0 14 9M48 55c-9 2-12 13-3 16M72 55c9 2 12 13 3 16M60 58c-7 5-4 15 0 15 4 0 7-10 0-15Z'/><path d='M60 73v26M60 84c-8-2-15 3-18 10M60 90c8-2 15 3 18 10'/></g></svg>") center/64px no-repeat; overflow:hidden; }
+  .card__media img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    transition:transform .4s ease; }
+  .card:hover .card__media img{ transform:scale(1.045); }
+  .badge{ position:absolute; inset-block-start:10px; inset-inline-start:10px;
+    background:var(--rose); color:var(--navy); font-size:12px; font-weight:800;
+    padding:4px 11px; border-radius:999px; letter-spacing:.3px; }
+  .card__body{ padding:15px 16px 17px; display:flex; flex-direction:column; gap:7px; flex:1; }
+  .card__tag{ font-size:12.5px; color:var(--rose-strong); font-weight:700; }
+  .card__name{ font-family:"Tajawal",sans-serif; font-size:20px; font-weight:800;
+    color:var(--navy); line-height:1.35; }
+  .card__foot{ margin-top:auto; padding-top:12px; display:flex; align-items:center;
+    justify-content:space-between; gap:10px; border-top:1px solid var(--line); }
+  .card__price{ font-size:17px; font-weight:800; color:var(--navy); }
+  .card__price span{ font-size:13px; font-weight:600; color:var(--muted); }
+  .card__cta{ font-size:14px; font-weight:700; color:var(--rose-strong);
+    display:inline-flex; align-items:center; gap:5px; white-space:nowrap; }
+  .card__cta svg{ width:15px; height:15px; stroke:var(--rose-strong); }
 
-  .card{
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 14px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    box-shadow: var(--shadow);
-    transition: transform .18s ease, box-shadow .18s ease;
-  }
-  .card:hover{
-    transform: translateY(-3px);
-    box-shadow: 0 16px 36px rgba(78, 18, 32, .13);
-  }
-
-  .card__media{
-    position: relative;
-    aspect-ratio: 1 / 1;
-    background: #EFE2CE url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><g fill='none' stroke='%236A1B2A' stroke-width='2' stroke-linecap='round' opacity='0.28'><circle cx='60' cy='46' r='12'/><path d='M60 34c-8-6-18 0-14 9M60 34c8-6 18 0 14 9M48 55c-9 2-12 13-3 16M72 55c9 2 12 13 3 16M60 58c-7 5-4 15 0 15 4 0 7-10 0-15Z'/><path d='M60 73v26M60 84c-8-2-15 3-18 10M60 90c8-2 15 3 18 10'/></g></svg>") center/64px no-repeat;
-    overflow: hidden;
-  }
-  .card__media img{
-    position: absolute;
-    inset: 0;
-    width: 100%; height: 100%;
-    object-fit: cover;
-    transition: transform .4s ease;
-  }
-  .card:hover .card__media img{ transform: scale(1.045); }
-
-  .badge{
-    position: absolute;
-    inset-block-start: 10px;
-    inset-inline-start: 10px;
-    background: var(--burgundy);
-    color: #FBF5EC;
-    font-size: 12px;
-    font-weight: 500;
-    padding: 4px 11px;
-    border-radius: 999px;
-    letter-spacing: .3px;
-  }
-
-  .card__body{
-    padding: 15px 16px 17px;
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
-    flex: 1;
-  }
-  .card__tag{
-    font-size: 12.5px;
-    color: var(--gold);
-    font-weight: 500;
-  }
-  .card__name{
-    font-family: "Amiri", serif;
-    font-size: 21px;
-    font-weight: 700;
-    color: var(--burgundy-2);
-    line-height: 1.35;
-  }
-  .card__foot{
-    margin-top: auto;
-    padding-top: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    border-top: 1px solid var(--line);
-  }
-  .card__price{
-    font-size: 17px;
-    font-weight: 700;
-    color: var(--ink);
-  }
-  .card__price span{ font-size: 13px; font-weight: 500; color: var(--muted); }
-  .card__cta{
-    font-size: 14px;
-    font-weight: 500;
-    color: var(--burgundy);
-    display: inline-flex;
-    align-items: center;
-    gap: 5px;
-    white-space: nowrap;
-  }
-  .card__cta svg{ width: 15px; height: 15px; stroke: var(--burgundy); }
-
-  /* ===== الحالات الفارغة والتحميل ===== */
-  .state{
-    text-align: center;
-    padding: 70px 20px;
-    color: var(--muted);
-  }
-  .state h2{
-    font-family: "Amiri", serif;
-    color: var(--burgundy-2);
-    font-weight: 700;
-    margin: 0 0 6px;
-  }
-  .skeleton .card__media{ background: #EAD9C2; }
-  .skeleton .card__body > *{ background: #EFE2CE; color: transparent; border-radius: 6px; }
+  /* ===== الحالات ===== */
+  .state{ text-align:center; padding:70px 20px; color:var(--muted); }
+  .state h2{ font-family:"Tajawal",sans-serif; color:var(--navy); font-weight:800; margin:0 0 6px; }
+  .skeleton .card__media{ background:var(--cream); }
+  .skeleton .card__body > *{ background:var(--cream); color:transparent; border-radius:6px; }
 
   /* ===== الفوتر ===== */
-  .site-foot{
-    background: var(--burgundy);
-    color: #E7CFB0;
-    text-align: center;
-    padding: 22px 16px;
-    font-size: 13.5px;
-  }
-  .site-foot b{ color: #FBF5EC; font-weight: 700; }
+  .site-foot{ background:var(--navy); color:var(--rose-soft); text-align:center;
+    padding:22px 16px; font-size:13.5px; }
+  .site-foot b{ color:var(--cream); font-weight:800; }
 
-  @media (max-width: 480px){
-    .grid{ grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
-    .card__name{ font-size: 18px; }
+  @media (max-width:820px){
+    .hero__inner{ grid-template-columns:1fr; gap:24px; }
+    .hero__media{ order:-1; aspect-ratio:16/10; }
+  }
+  @media (max-width:480px){
+    .grid{ grid-template-columns:repeat(auto-fill, minmax(150px,1fr)); gap:14px; }
+    .card__name{ font-size:18px; }
     .card__cta span{ display:none; }
+    .head-inner{ padding:12px 16px; }
   }
-
-  @media (prefers-reduced-motion: reduce){
-    *{ transition: none !important; }
-  }
+  @media (prefers-reduced-motion:reduce){ *{ transition:none !important; } }
 </style>
 </head>
 <body>
 
-  <!-- شريط يظهر فقط في وضع العرض التجريبي -->
+  <div class="deliverbar">توصيل مجاني للطلبات فوق ١٥٠٬٠٠٠ د.ع · بغداد في نفس اليوم</div>
+
   <div class="devbar" id="devbar" hidden>
     عرض تجريبي · هذي بيانات وهمية للتصميم فقط. أضف مفتاح <b>anon</b> بالأعلى في الكود حتى تظهر منتجاتك الحقيقية من قاعدة البيانات.
   </div>
 
+
   <header class="site-head">
     <div class="head-inner">
-      <div class="brand">
-        <div class="brand__mark">قدح</div>
-        <div class="brand__sub">توصيل ورد فاخر · بغداد</div>
-      </div>
+      <a class="brand" href="index.html">
+        <img class="brand__icon" src="icon-cream.png" alt="قدّاح" onerror="this.style.display='none'" />
+        <span class="brand__text">
+          <span class="brand__ar">قدّاح</span>
+          <span class="brand__en">QADAH</span>
+        </span>
+      </a>
+      <nav class="head-nav">
+        <a class="cart-link" href="cart.html" aria-label="السلة">
+          <svg class="cart-ic" viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>
+          <span class="badge" data-cart-count style="display:none">0</span>
+        </a>
+      </nav>
     </div>
   </header>
+
+  <section class="hero">
+    <div class="hero__inner">
+      <div class="hero__copy">
+        <span class="hero__tag">توصيل ورد فاخر في بغداد</span>
+        <h1 class="hero__title">نُهدي المشاعر</h1>
+        <p class="hero__lead">باقات وتنسيقات مصمّمة بعناية توصل إحساسك بأناقة، وتوصل في نفس اليوم داخل بغداد.</p>
+        <p class="hero__en">WE DELIVER EMOTIONS</p>
+        <div class="hero__cta">
+          <a class="btn btn--navy" href="#catalog">تسوّق الآن</a>
+          <a class="btn btn--ghost" href="#catalog">الباقات المميّزة</a>
+        </div>
+      </div>
+      <div class="hero__media is-empty">
+        <img id="heroImg" alt="باقة قدّاح" onerror="var m=this.closest('.hero__media'); if(m) m.classList.add('is-empty'); this.remove();" />
+      </div>
+    </div>
+  </section>
 
   <section class="controls">
     <div class="search-wrap">
@@ -304,13 +199,13 @@
     <div class="count" id="count"></div>
   </section>
 
-  <main class="catalog">
+  <main class="catalog" id="catalog">
     <div class="grid" id="grid"></div>
     <div class="state" id="state" hidden></div>
   </main>
 
   <footer class="site-foot">
-    <b>قدح</b> · Al Hanoot for General Trading
+    <b>قدّاح</b> · Al Hanoot for General Trading
   </footer>
 
 <script>
@@ -370,6 +265,20 @@ function afterLoad(){
   }
   buildChips();
   render();
+  setHeroImage();
+}
+
+function setHeroImage(){
+  var el = document.getElementById("heroImg");
+  if (!el) return;
+  var pick = state.all.find(function(p){ return p.featured && imgUrl(p); })
+          || state.all.find(function(p){ return imgUrl(p); });
+  if (pick){
+    var m = el.closest(".hero__media"); if (m) m.classList.remove("is-empty");
+    el.src = imgUrl(pick); el.alt = pick.name_ar || "باقة قدّاح";
+  } else {
+    el.remove();
+  }
 }
 
 /* =========================================================

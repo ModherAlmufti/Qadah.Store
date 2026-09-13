@@ -3,334 +3,150 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>قدح · تفاصيل المنتج</title>
+<title>قدّاح · تفاصيل المنتج</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
 <style>
-  :root {
-    --cream: #F6EEE1;
-    --cream-2: #EFE4D2;
-    --card: #FFFDF9;
-    --burgundy: #6E1F2C;
-    --burgundy-dark: #501521;
-    --gold: #B08A4E;
-    --ink: #382822;
-    --muted: #8C7C71;
-    --line: #E6DAC7;
-    --shadow: 0 18px 40px rgba(80, 21, 33, 0.10);
-    --radius: 18px;
+  :root{
+    --navy:#01183a; --navy-dark:#000f28;
+    --rose:#dca096; --rose-strong:#c98578; --rose-soft:#f4e4df;
+    --cream-page:#fbf6ee; --cream:#f5ede0; --card:#fffdfa;
+    --ink:#24303c; --muted:#8f8781; --line:#ece2d4;
+    --shadow:0 14px 34px rgba(1,24,58,.08);
+    --radius:18px;
   }
 
   * { box-sizing: border-box; }
-
   html, body { margin: 0; padding: 0; }
-
-  body {
-    font-family: "Tajawal", system-ui, sans-serif;
-    background: var(--cream);
-    color: var(--ink);
-    line-height: 1.7;
-    min-height: 100vh;
-  }
-
+  body{ font-family:"Tajawal", system-ui, sans-serif; background:var(--cream-page);
+    color:var(--ink); line-height:1.7; min-height:100vh; }
   a { color: inherit; text-decoration: none; }
 
-  /* Header */
-  .topbar {
-    background: var(--burgundy);
-    color: var(--cream);
-    padding: 14px 22px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-  }
-  .brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-weight: 800;
-    font-size: 24px;
-    letter-spacing: 1px;
-  }
-  .brand .mark {
-    width: 34px; height: 34px;
-    border: 2px solid var(--gold);
-    border-radius: 50%;
-    display: grid; place-items: center;
-    color: var(--gold);
-    font-size: 16px;
-  }
-  .back-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-weight: 500;
-    font-size: 15px;
-    color: var(--cream);
-    opacity: 0.92;
-    transition: opacity .15s ease;
-  }
-  .back-link:hover { opacity: 1; }
-
-  .nav { display: flex; align-items: center; gap: 18px; }
-  .cart-link {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    font-weight: 500;
-    font-size: 15px;
-    color: var(--cream);
-    opacity: 0.92;
-    transition: opacity .15s ease;
-  }
-  .cart-link:hover { opacity: 1; }
-  .badge {
-    background: var(--gold); color: #3a2a12;
-    min-width: 20px; height: 20px; padding: 0 6px;
-    border-radius: 999px; font-size: 12px; font-weight: 800;
-    display: inline-flex; align-items: center; justify-content: center;
-  }
+  /* ===== شريط التوصيل + الترويسة (كريمية) ===== */
+  .deliverbar{ background:var(--navy); color:var(--cream); text-align:center;
+    font-size:13px; font-weight:500; padding:8px 16px; letter-spacing:.2px; }
+  .site-head{ background:var(--cream); border-bottom:1px solid var(--line); }
+  .head-inner{ max-width:1180px; margin:0 auto; padding:14px 24px;
+    display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  .brand{ display:flex; align-items:center; gap:12px; }
+  .brand__icon{ width:46px; height:46px; object-fit:contain; }
+  .brand__text{ display:flex; flex-direction:column; line-height:1; }
+  .brand__ar{ font-family:"Tajawal",sans-serif; font-weight:800; font-size:26px;
+    color:var(--navy); letter-spacing:.5px; }
+  .brand__en{ font-size:12px; font-weight:700; color:var(--rose-strong);
+    letter-spacing:4px; margin-top:4px; }
+  .head-nav{ display:flex; align-items:center; gap:16px; }
+  .head-nav a{ display:inline-flex; align-items:center; gap:6px; font-weight:700;
+    font-size:15px; color:var(--navy); opacity:.9; transition:opacity .15s ease; }
+  .head-nav a:hover{ opacity:1; }
+  .cart-link{ position:relative; }
+  .cart-ic{ width:24px; height:24px; stroke:var(--navy); fill:none; stroke-width:1.7; }
+  .cart-link .badge{ position:absolute; inset-block-start:-6px; inset-inline-start:-8px;
+    background:var(--rose-strong); color:#fff; min-width:18px; height:18px; padding:0 5px;
+    border-radius:999px; font-size:11px; font-weight:800;
+    display:inline-flex; align-items:center; justify-content:center; }
 
   /* Layout */
-  .wrap {
-    max-width: 1040px;
-    margin: 0 auto;
-    padding: 34px 22px 70px;
-  }
+  .wrap { max-width:1040px; margin:0 auto; padding:34px 22px 70px; }
 
   /* Loading */
-  .loading {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 40px;
-    align-items: start;
-  }
-  .sk {
-    background: linear-gradient(100deg, var(--cream-2) 30%, #f5ecdd 50%, var(--cream-2) 70%);
-    background-size: 200% 100%;
-    animation: shimmer 1.3s infinite;
-    border-radius: 12px;
-  }
-  .sk-img { aspect-ratio: 1 / 1; border-radius: var(--radius); }
-  .sk-line { height: 20px; margin-bottom: 16px; }
-  .sk-line.lg { height: 34px; width: 70%; }
-  .sk-line.sm { width: 45%; }
-  @keyframes shimmer { to { background-position: -200% 0; } }
+  .loading { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:start; }
+  .sk { background:linear-gradient(100deg,var(--cream) 30%,#efe6d6 50%,var(--cream) 70%);
+    background-size:200% 100%; animation:shimmer 1.3s infinite; border-radius:12px; }
+  .sk-img { aspect-ratio:1/1; border-radius:var(--radius); }
+  .sk-line { height:20px; margin-bottom:16px; }
+  .sk-line.lg { height:34px; width:70%; }
+  .sk-line.sm { width:45%; }
+  @keyframes shimmer { to { background-position:-200% 0; } }
 
   /* Product */
-  .product {
-    display: none;
-    grid-template-columns: 1.05fr 1fr;
-    gap: 48px;
-    align-items: start;
-  }
-  .media {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 14px;
-    box-shadow: var(--shadow);
-    position: relative;
-  }
-  .media::before {
-    content: "";
-    position: absolute;
-    inset: 8px;
-    border: 1px solid rgba(176, 138, 78, 0.28);
-    border-radius: 12px;
-    pointer-events: none;
-  }
-  .media img {
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
-    border-radius: 12px;
-    display: block;
-  }
-
-  .details { padding-top: 6px; }
-
-  .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 14px; }
-  .chip {
-    font-size: 13px;
-    font-weight: 700;
-    padding: 5px 13px;
-    border-radius: 999px;
-    background: rgba(110, 31, 44, 0.08);
-    color: var(--burgundy);
-    border: 1px solid rgba(110, 31, 44, 0.16);
-  }
-  .chip.gold {
-    background: rgba(176, 138, 78, 0.12);
-    color: #8a6a35;
-    border-color: rgba(176, 138, 78, 0.30);
-  }
-
-  .name-ar {
-    font-size: 34px;
-    font-weight: 800;
-    line-height: 1.3;
-    margin: 0 0 4px;
-    color: var(--ink);
-  }
-  .name-en {
-    font-size: 16px;
-    font-weight: 500;
-    color: var(--muted);
-    margin: 0 0 20px;
-    direction: ltr;
-    text-align: right;
-  }
-
-  .price {
-    font-size: 30px;
-    font-weight: 800;
-    color: var(--burgundy);
-    margin: 0 0 26px;
-  }
-  .price small { font-size: 17px; font-weight: 700; color: var(--muted); }
-
-  .divider { height: 1px; background: var(--line); margin: 0 0 22px; }
-
-  .section-title {
-    font-size: 15px;
-    font-weight: 700;
-    color: var(--muted);
-    margin: 0 0 6px;
-  }
-  .note {
-    font-size: 16px;
-    color: var(--ink);
-    margin: 0 0 26px;
-    max-width: 62ch;
-  }
-
-  .meta {
-    font-size: 14px;
-    color: var(--muted);
-    margin: 0 0 26px;
-  }
+  .product { display:none; grid-template-columns:1.05fr 1fr; gap:48px; align-items:start; }
+  .media { background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+    padding:14px; box-shadow:var(--shadow); position:relative; }
+  .media::before { content:""; position:absolute; inset:8px; border:1px solid var(--rose-soft);
+    border-radius:12px; pointer-events:none; }
+  .media img { width:100%; aspect-ratio:1/1; object-fit:cover; border-radius:12px; display:block; }
+  .details { padding-top:6px; }
+  .chips { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:14px; }
+  .chip { font-size:13px; font-weight:700; padding:5px 13px; border-radius:999px;
+    background:rgba(1,24,58,.06); color:var(--navy); border:1px solid rgba(1,24,58,.14); }
+  .chip.gold { background:var(--rose-soft); color:var(--rose-strong); border-color:rgba(201,133,120,.35); }
+  .name-ar { font-size:34px; font-weight:800; line-height:1.3; margin:0 0 4px; color:var(--navy); }
+  .name-en { font-size:16px; font-weight:500; color:var(--muted); margin:0 0 20px;
+    direction:ltr; text-align:right; }
+  .price { font-size:30px; font-weight:800; color:var(--navy); margin:0 0 26px; }
+  .price small { font-size:17px; font-weight:700; color:var(--muted); }
+  .divider { height:1px; background:var(--line); margin:0 0 22px; }
+  .section-title { font-size:15px; font-weight:700; color:var(--muted); margin:0 0 6px; }
+  .note { font-size:16px; color:var(--ink); margin:0 0 26px; max-width:62ch; }
+  .meta { font-size:14px; color:var(--muted); margin:0 0 26px; }
 
   /* Purchase row */
-  .buy {
-    display: flex;
-    align-items: stretch;
-    gap: 12px;
-    flex-wrap: wrap;
-  }
-  .qty {
-    display: inline-flex;
-    align-items: center;
-    border: 1px solid var(--line);
-    border-radius: 12px;
-    background: var(--card);
-    overflow: hidden;
-  }
-  .qty button {
-    width: 44px; height: 52px;
-    border: 0; background: transparent;
-    font-size: 22px; color: var(--burgundy);
-    cursor: pointer;
-    font-family: inherit;
-    transition: background .12s ease;
-  }
-  .qty button:hover { background: rgba(110, 31, 44, 0.06); }
-  .qty span {
-    min-width: 46px;
-    text-align: center;
-    font-weight: 700;
-    font-size: 18px;
-  }
-
-  .add-btn {
-    flex: 1;
-    min-width: 200px;
-    height: 52px;
-    border: 0;
-    border-radius: 12px;
-    background: var(--burgundy);
-    color: var(--cream);
-    font-family: inherit;
-    font-weight: 700;
-    font-size: 17px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    transition: background .15s ease, transform .05s ease;
-  }
-  .add-btn:hover { background: var(--burgundy-dark); }
-  .add-btn:active { transform: translateY(1px); }
-  .add-btn:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+  .buy { display:flex; align-items:stretch; gap:12px; flex-wrap:wrap; }
+  .qty { display:inline-flex; align-items:center; border:1px solid var(--line);
+    border-radius:12px; background:var(--card); overflow:hidden; }
+  .qty button { width:44px; height:52px; border:0; background:transparent; font-size:22px;
+    color:var(--navy); cursor:pointer; font-family:inherit; transition:background .12s ease; }
+  .qty button:hover { background:rgba(1,24,58,.06); }
+  .qty span { min-width:46px; text-align:center; font-weight:700; font-size:18px; }
+  .add-btn { flex:1; min-width:200px; height:52px; border:0; border-radius:12px;
+    background:var(--navy); color:var(--cream); font-family:inherit; font-weight:700; font-size:17px;
+    cursor:pointer; display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    transition:background .15s ease, transform .05s ease; }
+  .add-btn:hover { background:var(--navy-dark); }
+  .add-btn:active { transform:translateY(1px); }
+  .add-btn:focus-visible { outline:3px solid var(--rose); outline-offset:2px; }
 
   /* Error / not found */
-  .state {
-    display: none;
-    text-align: center;
-    padding: 70px 20px;
-    max-width: 460px;
-    margin: 0 auto;
-  }
-  .state .icon { font-size: 44px; margin-bottom: 12px; }
-  .state h2 { font-size: 24px; margin: 0 0 8px; color: var(--burgundy); }
-  .state p { color: var(--muted); margin: 0 0 22px; }
-  .state .cta {
-    display: inline-block;
-    background: var(--burgundy);
-    color: var(--cream);
-    padding: 12px 24px;
-    border-radius: 12px;
-    font-weight: 700;
-  }
+  .state { display:none; text-align:center; padding:70px 20px; max-width:460px; margin:0 auto; }
+  .state .icon { font-size:44px; margin-bottom:12px; }
+  .state h2 { font-size:24px; margin:0 0 8px; color:var(--navy); }
+  .state p { color:var(--muted); margin:0 0 22px; }
+  .state .cta { display:inline-block; background:var(--navy); color:var(--cream);
+    padding:12px 24px; border-radius:12px; font-weight:700; }
 
   /* Toast */
-  .toast {
-    position: fixed;
-    bottom: 26px;
-    left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    background: var(--ink);
-    color: var(--cream);
-    padding: 13px 22px;
-    border-radius: 12px;
-    font-weight: 500;
-    box-shadow: var(--shadow);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .2s ease, transform .2s ease;
-    z-index: 50;
-  }
-  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .toast { position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(20px);
+    background:var(--navy); color:var(--cream); padding:13px 22px; border-radius:12px; font-weight:500;
+    box-shadow:var(--shadow); opacity:0; pointer-events:none;
+    transition:opacity .2s ease, transform .2s ease; z-index:50; }
+  .toast.show { opacity:1; transform:translateX(-50%) translateY(0); }
 
-  @media (max-width: 760px) {
-    .product, .loading { grid-template-columns: 1fr; gap: 26px; }
-    .name-ar { font-size: 28px; }
-    .price { font-size: 26px; }
-    .wrap { padding-top: 24px; }
+  @media (max-width:760px){
+    .product,.loading { grid-template-columns:1fr; gap:26px; }
+    .name-ar { font-size:28px; }
+    .price { font-size:26px; }
+    .wrap { padding-top:24px; }
+    .head-inner { padding:12px 16px; }
   }
+  @media (prefers-reduced-motion:reduce){ *{ transition:none !important; animation:none !important; } }
 </style>
 </head>
 <body>
 
-  <header class="topbar">
-    <a class="brand" href="index.html">
-      <span class="mark">❀</span>
-      <span>قدح</span>
-    </a>
-    <nav class="nav">
-      <a class="cart-link" href="cart.html">
-        <span aria-hidden="true">🛒</span>
-        <span>السلة</span>
-        <span class="badge" data-cart-count style="display:none">0</span>
+  <div class="deliverbar">توصيل مجاني للطلبات فوق ١٥٠٬٠٠٠ د.ع · بغداد في نفس اليوم</div>
+
+  <header class="site-head">
+    <div class="head-inner">
+      <a class="brand" href="index.html">
+        <img class="brand__icon" src="icon-cream.png" alt="قدّاح" onerror="this.style.display='none'" />
+        <span class="brand__text">
+          <span class="brand__ar">قدّاح</span>
+          <span class="brand__en">QADAH</span>
+        </span>
       </a>
-      <a class="back-link" href="index.html">
-        <span>الرجوع للكتالوج</span>
-        <span aria-hidden="true">←</span>
-      </a>
-    </nav>
+      <nav class="head-nav">
+        <a class="cart-link" href="cart.html" aria-label="السلة">
+          <svg class="cart-ic" viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>
+          <span class="badge" data-cart-count style="display:none">0</span>
+        </a>
+        <a href="index.html">
+          <span>الكتالوج</span>
+          <span aria-hidden="true">←</span>
+        </a>
+      </nav>
+    </div>
   </header>
 
   <main class="wrap">
@@ -432,7 +248,7 @@
   const FALLBACK_IMG =
     "data:image/svg+xml;utf8," +
     encodeURIComponent(
-      '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600"><rect width="600" height="600" fill="#EFE4D2"/><text x="50%" y="50%" font-size="120" text-anchor="middle" dominant-baseline="central">❀</text></svg>'
+      '<svg xmlns="http://www.w3.org/2000/svg" width="600" height="600"><rect width="600" height="600" fill="#f4e4df"/><text x="50%" y="50%" font-size="120" text-anchor="middle" dominant-baseline="central">❀</text></svg>'
     );
 
   // ===== قراءة المنتج =====
@@ -459,7 +275,7 @@
 
   function renderProduct(p) {
     currentProduct = p;
-    document.title = (p.name_ar || "منتج") + " · قدح";
+    document.title = (p.name_ar || "منتج") + " · قدّاح";
 
     // الصورة (image_url رابط كامل)
     const img = $("pImage");
