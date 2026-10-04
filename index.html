@@ -485,6 +485,8 @@ async function load(){
   renderGrid();
   renderFinder();
   updateWishCount();
+  // روابط من الصفحات الأخرى (#wish أو #occ=...) تنزل مباشرة لقسم الهدايا
+  if (state.wishOnly || state.occ || state.rec) document.getElementById("gifts").scrollIntoView();
 }
 
 /* =========================================================
@@ -581,6 +583,7 @@ function readHash(){
   const o = h.get("occ"), r = h.get("rec");
   if (o && state.occasions.some(x => x.id === o)) state.occ = o;
   if (r && state.recipients.some(x => x.id === r)) state.rec = r;
+  if (location.hash === "#wish") state.wishOnly = true;
 }
 
 /* =========================================================
