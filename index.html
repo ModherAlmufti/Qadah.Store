@@ -3,424 +3,770 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>قدّاح · الكتالوج</title>
+<title>قدّاح · هدايا وورد بنفس اليوم في بغداد</title>
+<meta name="description" content="قدّاح: ورد فاخر وهدايا مختارة بعناية، تصل لمن تحب في بغداد بنفس اليوم، مع بطاقة بكلماتك أنت." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet" />
 <style>
   :root{
     --navy:#01183a; --navy-dark:#000f28;
-    --rose:#dca096; --rose-strong:#c98578; --rose-soft:#f4e4df;
+    --rose:#dca096; --rose-strong:#c98578; --rose-deep:#b0705f; --rose-soft:#f4e4df;
+    --sage-soft:#e7ebe2; --sand-soft:#f6e6d3;
     --cream-page:#fbf6ee; --cream:#f5ede0; --card:#fffdfa;
-    --ink:#24303c; --muted:#8f8781; --line:#ece2d4;
-    --shadow:0 14px 34px rgba(1,24,58,.08);
-    --radius:18px;
+    --ink:#24303c; --muted:#6b645e; --line:#ece2d4; --ok:#2e7d5b;
+    --shadow:0 8px 26px rgba(1,24,58,.07);
+    --radius:22px;
+    --latin:"Cormorant Garamond", Georgia, serif;
   }
-
   *{ box-sizing:border-box; }
+  html{ scroll-behavior:smooth; }
   html, body{ margin:0; padding:0; }
   body{ background:var(--cream-page); color:var(--ink);
     font-family:"Tajawal", system-ui, sans-serif; line-height:1.6; -webkit-font-smoothing:antialiased; }
   a{ color:inherit; text-decoration:none; }
   img{ display:block; max-width:100%; }
+  button{ font-family:inherit; cursor:pointer; }
+  .wrap{ max-width:1240px; margin:0 auto; padding:0 24px; }
+  .latin{ font-family:var(--latin); letter-spacing:4px; font-weight:600; color:var(--rose-deep); direction:ltr; unicode-bidi:isolate; }
+  .sr{ position:absolute; width:1px; height:1px; overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; }
+  :focus-visible{ outline:2px solid var(--rose-strong); outline-offset:2px; }
 
-  /* ===== شريط التوصيل + الترويسة (كريمية) ===== */
+  /* ===== شريط علوي + ترويسة ===== */
   .deliverbar{ background:var(--navy); color:var(--cream); text-align:center;
-    font-size:13px; font-weight:500; padding:8px 16px; letter-spacing:.2px; }
-  .site-head{ background:var(--cream); border-bottom:1px solid var(--line); }
-  .head-inner{ max-width:1180px; margin:0 auto; padding:14px 24px;
-    display:flex; align-items:center; justify-content:space-between; gap:16px; }
-  .brand{ display:flex; align-items:center; gap:12px; }
-  .brand__icon{ width:46px; height:46px; object-fit:contain; }
-  .brand__text{ display:flex; flex-direction:column; line-height:1; }
-  .brand__ar{ font-family:"Tajawal",sans-serif; font-weight:800; font-size:26px;
-    color:var(--navy); letter-spacing:.5px; }
-  .brand__en{ font-size:12px; font-weight:700; color:var(--rose-strong);
-    letter-spacing:4px; margin-top:4px; }
-  .head-nav{ display:flex; align-items:center; gap:16px; }
-  .head-nav a{ display:inline-flex; align-items:center; gap:6px; font-weight:700;
-    font-size:15px; color:var(--navy); opacity:.9; transition:opacity .15s ease; }
-  .head-nav a:hover{ opacity:1; }
-  .cart-link{ position:relative; }
-  .cart-ic{ width:24px; height:24px; stroke:var(--navy); fill:none; stroke-width:1.7; }
-  .cart-link .badge{ position:absolute; inset-block-start:-6px; inset-inline-start:-8px;
-    background:var(--rose-strong); color:#fff; min-width:18px; height:18px; padding:0 5px;
-    border-radius:999px; font-size:11px; font-weight:800;
+    font-size:13px; font-weight:500; padding:9px 16px; }
+  .site-head{ background:var(--cream); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:30; }
+  .head-inner{ display:flex; align-items:center; gap:28px; height:76px; }
+  .brand{ display:flex; align-items:center; gap:10px; flex-shrink:0; }
+  .brand__icon{ width:44px; height:44px; object-fit:contain; }
+  .brand__text{ display:flex; flex-direction:column; align-items:center; line-height:1; }
+  .brand__ar{ font-weight:800; font-size:26px; color:var(--navy); }
+  .brand__en{ font-family:var(--latin); font-size:12px; font-weight:600; color:var(--rose-deep); letter-spacing:5px; margin-top:4px; }
+  .head-nav{ flex:1; display:flex; gap:26px; font-weight:700; font-size:15px; color:var(--navy); }
+  .head-nav a{ padding:8px 0; border-bottom:2px solid transparent; transition:border-color .15s; }
+  .head-nav a:hover{ border-color:var(--rose); }
+  .head-actions{ display:flex; align-items:center; gap:4px; margin-inline-start:auto; }
+  .icon-btn{ position:relative; width:44px; height:44px; border:none; background:transparent; border-radius:12px;
+    display:inline-flex; align-items:center; justify-content:center; color:var(--navy); }
+  .icon-btn:hover{ background:rgba(1,24,58,.05); }
+  .icon-btn svg{ width:22px; height:22px; }
+  .icon-btn .badge{ position:absolute; top:4px; left:2px; background:var(--rose-strong); color:#fff;
+    min-width:18px; height:18px; padding:0 5px; border-radius:999px; font-size:11px; font-weight:800;
     display:inline-flex; align-items:center; justify-content:center; }
+  .cart-btn{ height:44px; padding:0 16px; border-radius:12px; background:var(--navy); color:var(--cream);
+    display:inline-flex; align-items:center; gap:8px; font-weight:700; font-size:14px; margin-inline-start:8px; }
+  .cart-btn svg{ width:19px; height:19px; }
+  .cart-btn:hover{ background:var(--navy-dark); }
+  .cart-btn b{ background:var(--rose); color:var(--navy); min-width:20px; height:20px; padding:0 6px; border-radius:999px;
+    font-size:12px; font-weight:800; display:inline-flex; align-items:center; justify-content:center; }
 
-  /* ===== شريط العرض التجريبي ===== */
-  .devbar{ background:var(--rose-soft); color:var(--navy); text-align:center;
-    font-size:13px; padding:8px 16px; }
-  .devbar b{ color:var(--rose-strong); font-weight:800; }
-
-  /* ===== القسم البطولي ===== */
-  .hero{ background:var(--cream); }
-  .hero__inner{ max-width:1180px; margin:0 auto; padding:34px 24px 46px;
-    display:grid; grid-template-columns:1.05fr .95fr; gap:40px; align-items:center; }
-  .hero__tag{ display:inline-block; background:var(--rose-soft); color:var(--rose-strong);
-    font-size:13px; font-weight:700; padding:6px 14px; border-radius:999px; }
-  .hero__title{ font-family:"Tajawal",sans-serif; font-weight:800;
-    font-size:clamp(38px,6vw,60px); line-height:1.1; color:var(--navy); margin:16px 0 12px; }
-  .hero__lead{ font-size:17px; color:var(--ink); max-width:44ch; margin:0 0 14px; }
-  .hero__en{ font-size:14px; font-weight:800; color:var(--rose-strong);
-    letter-spacing:3px; margin:0 0 22px; }
-  .hero__cta{ display:flex; gap:12px; flex-wrap:wrap; }
-  .btn{ display:inline-flex; align-items:center; justify-content:center; font-family:inherit;
-    font-weight:700; font-size:16px; padding:13px 26px; border-radius:12px; cursor:pointer;
-    border:1px solid transparent; transition:background .15s ease, color .15s ease, border-color .15s ease; }
+  /* ===== البطل ===== */
+  .hero{ padding:44px 0 28px; }
+  .hero__grid{ display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
+  .hero__eyebrow{ font-size:16px; }
+  .hero__title{ font-weight:800; font-size:clamp(40px,5.4vw,66px); line-height:1.12; color:var(--navy); margin:12px 0 16px; }
+  .hero__lead{ font-size:18px; color:#5a534e; max-width:34ch; margin:0; line-height:1.9; }
+  .hero__cta{ display:flex; gap:12px; flex-wrap:wrap; margin-top:30px; }
+  .btn{ display:inline-flex; align-items:center; justify-content:center; gap:10px; font-weight:700; font-size:16px;
+    min-height:54px; padding:0 30px; border-radius:16px; border:1.5px solid transparent; transition:background .15s, color .15s; }
+  .btn svg{ width:18px; height:18px; }
   .btn--navy{ background:var(--navy); color:var(--cream); }
   .btn--navy:hover{ background:var(--navy-dark); }
-  .btn--ghost{ background:transparent; color:var(--navy); border-color:var(--navy); }
+  .btn--ghost{ border-color:var(--navy); color:var(--navy); background:transparent; }
   .btn--ghost:hover{ background:var(--navy); color:var(--cream); }
-  .hero__media{ position:relative; aspect-ratio:4/3; border-radius:22px; overflow:hidden;
-    box-shadow:var(--shadow); background:var(--rose-soft); }
-  .hero__media img{ width:100%; height:100%; object-fit:cover; }
-  .hero__media.is-empty{ background:var(--rose-soft) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><g fill='none' stroke='%2301183a' stroke-width='2' stroke-linecap='round' opacity='0.26'><circle cx='60' cy='46' r='12'/><path d='M60 34c-8-6-18 0-14 9M60 34c8-6 18 0 14 9M48 55c-9 2-12 13-3 16M72 55c9 2 12 13 3 16M60 58c-7 5-4 15 0 15 4 0 7-10 0-15Z'/><path d='M60 73v26M60 84c-8-2-15 3-18 10M60 90c8-2 15 3 18 10'/></g></svg>") center/120px no-repeat; }
+  .hero__media{ position:relative; aspect-ratio:1/1; max-height:560px; border-radius:32px; overflow:hidden; background:var(--rose-soft); }
+  .hero__media img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+  .hero__pill{ position:absolute; top:20px; right:20px; z-index:2; background:var(--card); color:var(--navy);
+    font-size:13px; font-weight:700; padding:9px 16px; border-radius:999px; box-shadow:var(--shadow); }
+  .ph{ background:var(--rose-soft) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><g fill='none' stroke='%2301183a' stroke-width='2' stroke-linecap='round' opacity='0.26'><circle cx='60' cy='46' r='12'/><path d='M60 34c-8-6-18 0-14 9M60 34c8-6 18 0 14 9M48 55c-9 2-12 13-3 16M72 55c9 2 12 13 3 16M60 58c-7 5-4 15 0 15 4 0 7-10 0-15Z'/><path d='M60 73v26M60 84c-8-2-15 3-18 10M60 90c8-2 15 3 18 10'/></g></svg>") center/96px no-repeat; }
 
-  /* ===== شريط التحكم ===== */
-  .controls{ max-width:1180px; margin:0 auto; padding:28px 24px 6px; }
-  .search-wrap{ position:relative; max-width:460px; }
-  .search{ width:100%; padding:13px 46px 13px 16px; border:1px solid var(--line);
-    border-radius:12px; background:var(--card); font-family:inherit; font-size:15px;
-    color:var(--ink); outline:none; transition:border-color .15s ease; }
-  .search:focus{ border-color:var(--rose-strong); }
-  .search-wrap svg{ position:absolute; inset-inline-end:15px; top:50%; transform:translateY(-50%);
-    width:18px; height:18px; stroke:var(--muted); pointer-events:none; }
-  .chips{ display:flex; flex-wrap:wrap; gap:9px; margin-top:18px; }
-  .chip{ font-family:inherit; font-size:14px; padding:7px 16px; border-radius:999px;
-    border:1px solid var(--line); background:transparent; color:var(--navy); cursor:pointer;
-    transition:background .15s ease, color .15s ease, border-color .15s ease; }
+  /* ===== شريط الثقة ===== */
+  .trust{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; padding:8px 0 12px; }
+  .trust__item{ background:var(--card); border:1px solid var(--line); border-radius:18px; padding:20px 22px;
+    display:flex; align-items:center; gap:14px; }
+  .trust__item svg{ width:28px; height:28px; flex-shrink:0; color:var(--rose-strong); }
+  .trust__t{ font-size:16px; font-weight:700; color:var(--navy); }
+  .trust__s{ font-size:13px; color:var(--muted); margin-top:2px; }
+
+  /* ===== ماذا تريد أن تقول؟ ===== */
+  .section{ padding:64px 0 0; }
+  .section__head{ text-align:center; max-width:640px; margin:0 auto; }
+  .section__title{ font-size:clamp(28px,3.2vw,40px); font-weight:800; color:var(--navy); margin:0; }
+  .section__sub{ font-size:17px; color:var(--muted); margin:8px 0 0; }
+  .chips{ display:flex; flex-wrap:wrap; justify-content:center; gap:10px; margin-top:28px; }
+  .chip{ min-height:48px; padding:0 20px; border-radius:999px; border:1px solid var(--line); background:var(--card);
+    color:var(--ink); font-size:15px; font-weight:700; display:inline-flex; align-items:center; gap:8px;
+    transition:background .15s, border-color .15s, color .15s; }
+  .chip svg{ width:19px; height:19px; color:var(--rose-strong); }
   .chip:hover{ border-color:var(--rose-strong); }
-  .chip[aria-pressed="true"]{ background:var(--rose); border-color:var(--rose); color:var(--navy); }
-  .count{ margin-top:16px; font-size:14px; color:var(--muted); }
+  .chip[aria-pressed="true"]{ background:var(--navy); border-color:var(--navy); color:var(--cream); }
+  .chip[aria-pressed="true"] svg{ color:var(--rose); }
+  .chips--small{ margin-top:14px; }
+  .chips--small .chip{ min-height:44px; font-size:14px; padding:0 16px; }
+  .chips__label{ font-size:14px; color:var(--muted); font-weight:700; align-self:center; margin-inline-end:4px; }
 
-  /* ===== شبكة المنتجات ===== */
-  .catalog{ max-width:1180px; margin:0 auto; padding:8px 24px 60px; }
-  .grid{ display:grid; grid-template-columns:repeat(auto-fill, minmax(228px,1fr)); gap:22px; }
-  .card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
-    overflow:hidden; display:flex; flex-direction:column; box-shadow:var(--shadow);
-    transition:transform .18s ease, box-shadow .18s ease; }
-  .card:hover{ transform:translateY(-3px); box-shadow:0 18px 40px rgba(1,24,58,.13); }
-  .card__media{ position:relative; aspect-ratio:1/1;
-    background:var(--rose-soft) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120' viewBox='0 0 120 120'><g fill='none' stroke='%2301183a' stroke-width='2' stroke-linecap='round' opacity='0.26'><circle cx='60' cy='46' r='12'/><path d='M60 34c-8-6-18 0-14 9M60 34c8-6 18 0 14 9M48 55c-9 2-12 13-3 16M72 55c9 2 12 13 3 16M60 58c-7 5-4 15 0 15 4 0 7-10 0-15Z'/><path d='M60 73v26M60 84c-8-2-15 3-18 10M60 90c8-2 15 3 18 10'/></g></svg>") center/64px no-repeat; overflow:hidden; }
-  .card__media img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
-    transition:transform .4s ease; }
-  .card:hover .card__media img{ transform:scale(1.045); }
-  .badge{ position:absolute; inset-block-start:10px; inset-inline-start:10px;
-    background:var(--rose); color:var(--navy); font-size:12px; font-weight:800;
-    padding:4px 11px; border-radius:999px; letter-spacing:.3px; }
-  .card__body{ padding:15px 16px 17px; display:flex; flex-direction:column; gap:7px; flex:1; }
-  .card__tag{ font-size:12.5px; color:var(--rose-strong); font-weight:700; }
-  .card__name{ font-family:"Tajawal",sans-serif; font-size:20px; font-weight:800;
-    color:var(--navy); line-height:1.35; }
-  .card__foot{ margin-top:auto; padding-top:12px; display:flex; align-items:center;
-    justify-content:space-between; gap:10px; border-top:1px solid var(--line); }
-  .card__price{ font-size:17px; font-weight:800; color:var(--navy); }
-  .card__price span{ font-size:13px; font-weight:600; color:var(--muted); }
-  .card__cta{ font-size:14px; font-weight:700; color:var(--rose-strong);
-    display:inline-flex; align-items:center; gap:5px; white-space:nowrap; }
-  .card__cta svg{ width:15px; height:15px; stroke:var(--rose-strong); }
+  /* ===== الشبكة ===== */
+  .gifts{ padding:40px 0 0; }
+  .gifts__bar{ display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:22px; }
+  .gifts__title{ font-size:26px; font-weight:800; color:var(--navy); margin:0; }
+  .gifts__count{ font-size:15px; color:var(--muted); }
+  .gifts__tools{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+  .search-wrap{ position:relative; width:280px; max-width:100%; }
+  .search{ width:100%; height:46px; padding:0 44px 0 14px; border:1px solid var(--line); border-radius:14px;
+    background:var(--card); font-family:inherit; font-size:15px; color:var(--ink); outline:none; }
+  .search:focus{ border-color:var(--rose-strong); }
+  .search-wrap svg{ position:absolute; right:14px; top:50%; transform:translateY(-50%); width:18px; height:18px; color:var(--muted); pointer-events:none; }
+  .clear-btn{ height:46px; padding:0 16px; border-radius:14px; border:1px solid var(--line); background:transparent; color:var(--navy); font-weight:700; font-size:14px; }
 
-  /* ===== الحالات ===== */
-  .state{ text-align:center; padding:70px 20px; color:var(--muted); }
-  .state h2{ font-family:"Tajawal",sans-serif; color:var(--navy); font-weight:800; margin:0 0 6px; }
+  .grid{ display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:24px; }
+  .card{ background:var(--card); border-radius:var(--radius); overflow:hidden; display:flex; flex-direction:column;
+    box-shadow:var(--shadow); transition:transform .18s, box-shadow .18s; position:relative; }
+  .card:hover{ transform:translateY(-3px); box-shadow:0 18px 40px rgba(1,24,58,.12); }
+  .card__media{ position:relative; aspect-ratio:1/1; overflow:hidden; display:block; }
+  .card__media img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; transition:transform .4s; }
+  .card:hover .card__media img{ transform:scale(1.04); }
+  .card__badge{ position:absolute; top:14px; right:14px; z-index:2; background:var(--card); color:var(--navy);
+    font-size:12px; font-weight:800; padding:6px 11px; border-radius:999px; }
+  .card__badge--premium{ background:var(--navy); color:var(--rose); }
+  .wish{ position:absolute; top:8px; left:8px; z-index:3; width:44px; height:44px; border:none; background:transparent;
+    display:flex; align-items:center; justify-content:center; }
+  .wish span{ width:36px; height:36px; border-radius:50%; background:var(--card); display:flex; align-items:center; justify-content:center; box-shadow:0 2px 8px rgba(1,24,58,.08); }
+  .wish svg{ width:18px; height:18px; color:var(--navy); }
+  .wish[aria-pressed="true"] svg{ color:var(--rose-strong); fill:var(--rose-strong); }
+  .card__body{ padding:16px 18px 18px; display:flex; flex-direction:column; gap:5px; flex:1; }
+  .card__meta{ font-size:12px; color:var(--muted); display:flex; align-items:center; gap:5px; flex-wrap:wrap; }
+  .card__meta svg{ width:13px; height:13px; color:var(--ok); }
+  .card__name{ font-size:18px; font-weight:700; color:var(--navy); line-height:1.4; }
+  .card__name a:hover{ color:var(--rose-deep); }
+  .card__en{ font-size:13px; color:var(--muted); direction:ltr; text-align:right; }
+  .card__foot{ margin-top:auto; padding-top:12px; display:flex; align-items:center; justify-content:space-between; gap:10px; }
+  .card__price{ font-size:18px; font-weight:800; color:var(--navy); }
+  .card__price small{ font-size:13px; font-weight:600; color:var(--muted); }
+  .add{ height:44px; padding:0 16px; border-radius:12px; border:none; background:var(--navy); color:var(--cream);
+    font-size:14px; font-weight:700; display:inline-flex; align-items:center; gap:6px; }
+  .add svg{ width:16px; height:16px; }
+  .add:hover{ background:var(--navy-dark); }
+
+  .state{ text-align:center; padding:60px 20px; color:var(--muted); }
+  .state h2{ color:var(--navy); font-weight:800; margin:0 0 6px; font-size:22px; }
+  .state .btn{ margin-top:16px; min-height:46px; padding:0 22px; font-size:15px; }
   .skeleton .card__media{ background:var(--cream); }
-  .skeleton .card__body > *{ background:var(--cream); color:transparent; border-radius:6px; }
+  .skeleton .card__body > *{ background:var(--cream); color:transparent !important; border-radius:6px; }
+
+  /* ===== محتار؟ ===== */
+  .finder{ background:var(--navy); color:var(--cream); border-radius:32px; padding:48px; display:grid;
+    grid-template-columns:.9fr 1.1fr; gap:48px; align-items:start; }
+  .finder__title{ font-size:clamp(26px,3vw,36px); font-weight:800; margin:8px 0 8px; }
+  .finder__lead{ color:#d9d2c8; font-size:16px; margin:0; }
+  .finder .latin{ color:var(--rose); font-size:15px; }
+  .bars{ display:flex; gap:6px; margin-bottom:18px; }
+  .bars i{ flex:1; height:4px; border-radius:2px; background:rgba(251,246,238,.2); }
+  .bars i.on{ background:var(--rose); }
+  .finder__step{ font-size:13px; font-weight:700; color:var(--rose); }
+  .finder__q{ font-size:22px; font-weight:800; margin:4px 0 16px; }
+  .opts{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+  .opt{ min-height:52px; border-radius:14px; border:1px solid rgba(251,246,238,.25); background:rgba(251,246,238,.06);
+    color:var(--cream); font-size:15px; font-weight:700; padding:8px 12px; transition:background .15s; }
+  .opt:hover{ background:rgba(251,246,238,.14); }
+  .finder__back{ margin-top:14px; height:44px; border:none; background:transparent; color:var(--rose); font-weight:700; font-size:14px; padding:0; }
+  .matches{ display:flex; flex-direction:column; gap:10px; }
+  .match{ display:flex; align-items:center; gap:14px; background:rgba(251,246,238,.08); border-radius:14px; padding:10px 12px; }
+  .match:hover{ background:rgba(251,246,238,.14); }
+  .match__img{ width:56px; height:56px; border-radius:10px; overflow:hidden; flex-shrink:0; position:relative; }
+  .match__img img{ width:100%; height:100%; object-fit:cover; }
+  .match__name{ font-weight:700; font-size:15px; flex:1; }
+  .match__price{ color:var(--rose); font-size:14px; font-weight:700; white-space:nowrap; }
+  .finder__actions{ display:flex; gap:10px; margin-top:18px; flex-wrap:wrap; }
+  .btn--rose{ background:var(--rose); color:var(--navy); }
+  .btn--rose:hover{ background:#e6b3aa; }
+  .btn--line{ border-color:rgba(251,246,238,.4); color:var(--cream); background:transparent; }
+
+  /* ===== مساعدة ===== */
+  .help{ background:var(--rose-soft); border-radius:28px; padding:36px 40px; display:flex; align-items:center; gap:24px; flex-wrap:wrap; }
+  .help__icon{ width:60px; height:60px; border-radius:50%; background:var(--card); display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .help__icon svg{ width:28px; height:28px; color:var(--navy); }
+  .help__text{ flex:1; min-width:240px; }
+  .help h2{ margin:0; font-size:24px; font-weight:800; color:var(--navy); }
+  .help p{ margin:4px 0 0; color:#4a4440; }
 
   /* ===== الفوتر ===== */
-  .site-foot{ background:var(--navy); color:var(--rose-soft); text-align:center;
-    padding:22px 16px; font-size:13.5px; }
-  .site-foot b{ color:var(--cream); font-weight:800; }
+  .site-foot{ background:var(--navy); color:var(--cream); margin-top:72px; padding:52px 0 28px; }
+  .foot-grid{ display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:40px; }
+  .foot-brand{ font-size:30px; font-weight:800; }
+  .foot-grid h3{ color:var(--rose); font-size:15px; font-weight:800; margin:0 0 12px; }
+  .foot-grid ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; font-size:15px; }
+  .foot-grid a:hover{ color:var(--rose); }
+  .foot-legal{ border-top:1px solid rgba(251,246,238,.15); margin-top:36px; padding-top:18px; font-size:13px; color:#d9d2c8; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
 
+  .toast{ position:fixed; bottom:24px; left:50%; transform:translateX(-50%) translateY(20px); z-index:60;
+    background:var(--navy); color:var(--cream); padding:14px 20px; border-radius:14px; font-weight:700; font-size:15px;
+    box-shadow:0 12px 30px rgba(1,24,58,.25); opacity:0; pointer-events:none; transition:opacity .2s, transform .2s;
+    display:flex; align-items:center; gap:14px; max-width:calc(100% - 32px); }
+  .toast.show{ opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto; }
+  .toast a{ color:var(--rose); text-decoration:underline; white-space:nowrap; }
+
+  /* ===== الجوال ===== */
+  @media (max-width:1080px){
+    .grid{ grid-template-columns:repeat(3,minmax(0,1fr)); }
+    .head-nav{ display:none; }
+    .finder{ grid-template-columns:1fr; gap:28px; padding:36px; }
+  }
   @media (max-width:820px){
-    .hero__inner{ grid-template-columns:1fr; gap:24px; }
-    .hero__media{ order:-1; aspect-ratio:16/10; }
+    .hero__grid{ grid-template-columns:1fr; gap:24px; }
+    .hero__media{ order:-1; aspect-ratio:4/3; }
+    .trust{ grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .grid{ grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+    .foot-grid{ grid-template-columns:1fr 1fr; }
+    .foot-grid > div:first-child{ grid-column:1 / -1; }
   }
-  @media (max-width:480px){
-    .grid{ grid-template-columns:repeat(auto-fill, minmax(150px,1fr)); gap:14px; }
-    .card__name{ font-size:18px; }
-    .card__cta span{ display:none; }
-    .head-inner{ padding:12px 16px; }
+  @media (max-width:560px){
+    .wrap{ padding:0 16px; }
+    .head-inner{ height:64px; gap:8px; }
+    .brand__icon{ width:36px; height:36px; }
+    .brand__ar{ font-size:22px; }
+    .cart-btn span{ display:none; }
+    .cart-btn{ padding:0 12px; }
+    .hero{ padding:16px 0 20px; }
+    .hero__lead{ font-size:16px; }
+    .hero__cta .btn{ flex:1; padding:0 16px; }
+    .trust{ gap:10px; }
+    .trust__item{ flex-direction:column; align-items:flex-start; gap:8px; padding:14px; }
+    .trust__t{ font-size:14px; } .trust__s{ font-size:12px; }
+    .section{ padding-top:44px; }
+    .chips{ flex-wrap:nowrap; overflow-x:auto; justify-content:flex-start; margin-inline:-16px; padding:0 16px 4px; scrollbar-width:none; }
+    .chips::-webkit-scrollbar{ display:none; }
+    .chip{ flex-shrink:0; }
+    .gifts__bar{ flex-direction:column; align-items:stretch; }
+    .search-wrap{ width:auto; flex:1; }
+    .card__body{ padding:12px; }
+    .card__name{ font-size:15px; }
+    .card__en{ display:none; }
+    .card__foot{ flex-direction:column; align-items:stretch; gap:8px; }
+    .add{ justify-content:center; }
+    .card__badge{ top:10px; right:10px; font-size:11px; padding:5px 9px; }
+    .finder{ padding:26px 20px; border-radius:24px; }
+    .opts{ grid-template-columns:1fr 1fr; }
+    .help{ padding:24px 20px; }
+    .foot-legal{ flex-direction:column; }
   }
-  @media (prefers-reduced-motion:reduce){ *{ transition:none !important; } }
+  @media (prefers-reduced-motion:reduce){ *{ transition:none !important; scroll-behavior:auto !important; } }
 </style>
 </head>
 <body>
 
   <div class="deliverbar">توصيل مجاني للطلبات فوق ١٥٠٬٠٠٠ د.ع · بغداد في نفس اليوم</div>
 
-  <div class="devbar" id="devbar" hidden>
-    عرض تجريبي · هذي بيانات وهمية للتصميم فقط. أضف مفتاح <b>anon</b> بالأعلى في الكود حتى تظهر منتجاتك الحقيقية من قاعدة البيانات.
-  </div>
-
-
   <header class="site-head">
-    <div class="head-inner">
-      <a class="brand" href="index.html">
-        <img class="brand__icon" src="icon-cream.png" alt="قدّاح" onerror="this.style.display='none'" />
-        <span class="brand__text">
-          <span class="brand__ar">قدّاح</span>
-          <span class="brand__en">QADAH</span>
-        </span>
+    <div class="wrap head-inner">
+      <a class="brand" href="index.html" aria-label="قدّاح، الصفحة الرئيسية">
+        <img class="brand__icon" src="icon-cream.png" alt="" onerror="this.style.display='none'" />
+        <span class="brand__text"><span class="brand__ar">قدّاح</span><span class="brand__en">QADAH</span></span>
       </a>
-      <nav class="head-nav">
-        <a class="cart-link" href="cart.html" aria-label="السلة">
-          <svg class="cart-ic" viewBox="0 0 24 24"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>
-          <span class="badge" data-cart-count style="display:none">0</span>
-        </a>
+      <nav class="head-nav" aria-label="القائمة الرئيسية">
+        <a href="#occasions">المناسبات</a>
+        <a href="#gifts">كل الهدايا</a>
+        <a href="#finder">محتار ماذا تهدي؟</a>
+        <a href="#help">المساعدة</a>
       </nav>
+      <div class="head-actions">
+        <button class="icon-btn" type="button" id="wishBtn" aria-label="المفضلة" onclick="showWishlist()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg>
+          <span class="badge" id="wishCount" style="display:none">0</span>
+        </button>
+        <a class="cart-btn" href="cart.html" aria-label="السلة">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>
+          <span>السلة</span>
+          <b data-cart-count style="display:none">0</b>
+        </a>
+      </div>
     </div>
   </header>
 
-  <section class="hero">
-    <div class="hero__inner">
-      <div class="hero__copy">
-        <span class="hero__tag">توصيل ورد فاخر في بغداد</span>
-        <h1 class="hero__title">نُهدي المشاعر</h1>
-        <p class="hero__lead">باقات وتنسيقات مصمّمة بعناية توصل إحساسك بأناقة، وتوصل في نفس اليوم داخل بغداد.</p>
-        <p class="hero__en">WE DELIVER EMOTIONS</p>
-        <div class="hero__cta">
-          <a class="btn btn--navy" href="#catalog">تسوّق الآن</a>
-          <a class="btn btn--ghost" href="#catalog">الباقات المميّزة</a>
+  <main>
+    <!-- البطل -->
+    <section class="hero">
+      <div class="wrap hero__grid">
+        <div>
+          <div class="hero__eyebrow latin">WE DELIVER EMOTIONS</div>
+          <h1 class="hero__title">هديتك تبدأ<br />من الشعور</h1>
+          <p class="hero__lead">ورد فاخر وهدايا مختارة بعناية، تصل لمن تحب في بغداد بنفس اليوم، مع بطاقة بكلماتك أنت.</p>
+          <div class="hero__cta">
+            <a class="btn btn--navy" href="#occasions">أرسل هدية
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M15 6l-6 6 6 6"/></svg></a>
+            <a class="btn btn--ghost" href="#finder">ساعدني أختار</a>
+          </div>
+        </div>
+        <div class="hero__media ph" id="heroMedia">
+          <span class="hero__pill">توصيل في نفس اليوم ببغداد</span>
         </div>
       </div>
-      <div class="hero__media is-empty">
-        <img id="heroImg" alt="باقة قدّاح" onerror="var m=this.closest('.hero__media'); if(m) m.classList.add('is-empty'); this.remove();" />
+    </section>
+
+    <!-- الثقة -->
+    <section class="wrap" aria-label="لماذا قدّاح">
+      <div class="trust">
+        <div class="trust__item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7M7 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4zM17 19a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/></svg>
+          <div><div class="trust__t">توصيل بنفس اليوم</div><div class="trust__s">داخل بغداد</div></div>
+        </div>
+        <div class="trust__item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M12 15a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></svg>
+          <div><div class="trust__t">تنسيق عند الطلب</div><div class="trust__s">يُجهّز خصيصاً لطلبك</div></div>
+        </div>
+        <div class="trust__item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M4 6h16v12H4zM8 10h8M8 14h5"/></svg>
+          <div><div class="trust__t">بطاقة بكلماتك</div><div class="trust__s">رسالة شخصية مع كل هدية</div></div>
+        </div>
+        <div class="trust__item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg>
+          <div><div class="trust__t">دعم عبر واتساب</div><div class="trust__s">قبل الطلب وبعده</div></div>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <section class="controls">
-    <div class="search-wrap">
-      <input class="search" id="search" type="search" placeholder="ابحث عن منتج أو رقم صنف…" autocomplete="off" />
-      <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
-    </div>
-    <div class="chips" id="chips"></div>
-    <div class="count" id="count"></div>
-  </section>
+    <!-- ماذا تريد أن تقول؟ -->
+    <section class="section wrap" id="occasions" hidden>
+      <div class="section__head">
+        <h2 class="section__title">ماذا تريد أن تقول؟</h2>
+        <p class="section__sub">اختر الشعور، ونعرض لك الهدايا المناسبة.</p>
+      </div>
+      <div class="chips" id="occChips" role="group" aria-label="المناسبات"></div>
+      <div class="chips chips--small" id="recChips" role="group" aria-label="لمن الهدية" hidden></div>
+    </section>
 
-  <main class="catalog" id="catalog">
-    <div class="grid" id="grid"></div>
-    <div class="state" id="state" hidden></div>
+    <!-- الهدايا -->
+    <section class="gifts wrap" id="gifts">
+      <div class="gifts__bar">
+        <div>
+          <h2 class="gifts__title" id="gridTitle">كل الهدايا</h2>
+          <div class="gifts__count" id="count" aria-live="polite"></div>
+        </div>
+        <div class="gifts__tools">
+          <label class="search-wrap"><span class="sr">ابحث</span>
+            <input class="search" id="search" type="search" placeholder="ابحث باسم الهدية أو رقمها" autocomplete="off" />
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          </label>
+          <button class="clear-btn" id="clearBtn" type="button" hidden onclick="clearFilters()">عرض الكل</button>
+        </div>
+      </div>
+      <div class="grid" id="grid"></div>
+      <div class="state" id="state" hidden></div>
+    </section>
+
+    <!-- محتار؟ -->
+    <section class="section wrap" id="finder" hidden>
+      <div class="finder">
+        <div>
+          <div class="latin">GIFT FINDER</div>
+          <h2 class="finder__title">محتار ماذا تهدي؟</h2>
+          <p class="finder__lead">ثلاثة أسئلة سريعة، ونقترح لك الأنسب.</p>
+        </div>
+        <div id="finderBody" aria-live="polite"></div>
+      </div>
+    </section>
+
+    <!-- مساعدة -->
+    <section class="section wrap" id="help">
+      <div class="help">
+        <div class="help__icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M4 5h16v11H9l-5 4z"/></svg></div>
+        <div class="help__text">
+          <h2>نحن هنا لمساعدتك</h2>
+          <p>في اختيار الهدية، أو لمتابعة طلبك برقمه، تواصل معنا عبر واتساب.</p>
+        </div>
+        <a class="btn btn--navy" href="https://wa.me/9647754549417" target="_blank" rel="noopener">تواصل عبر واتساب</a>
+      </div>
+    </section>
   </main>
 
   <footer class="site-foot">
-    <b>قدّاح</b> · Al Hanoot for General Trading
+    <div class="wrap">
+      <div class="foot-grid">
+        <div>
+          <div class="foot-brand">قدّاح</div>
+          <div class="latin" style="color:var(--rose);font-size:14px;margin-top:4px">WE DELIVER EMOTIONS</div>
+          <div style="margin-top:14px;font-size:14px;color:#d9d2c8" dir="ltr">@qadah.iq</div>
+        </div>
+        <div>
+          <h3>تسوّق</h3>
+          <ul><li><a href="#occasions">المناسبات</a></li><li><a href="#gifts">كل الهدايا</a></li><li><a href="cart.html">السلة</a></li></ul>
+        </div>
+        <div>
+          <h3>المساعدة</h3>
+          <ul><li><a href="https://wa.me/9647754549417" target="_blank" rel="noopener">واتساب</a></li><li><a href="privacy.html">سياسة الخصوصية</a></li></ul>
+        </div>
+      </div>
+      <div class="foot-legal"><span>Al Hanoot for General Trading</span><span>© قدّاح</span></div>
+    </div>
   </footer>
 
+  <div class="toast" id="toast" role="status"></div>
+
+<script src="cart.js"></script>
 <script>
 /* =========================================================
-   الإعدادات — عدّل هنا فقط
+   الإعدادات
    ========================================================= */
 const SUPABASE_URL = "https://tsqkqoibfxachknfmzjj.supabase.co";
-
-// مفتاح anon العام (publishable). آمن يكون بالواجهة لأن الحماية عبر RLS.
-// استبدل النص أدناه بمفتاح anon الحقيقي من إعدادات المشروع في Supabase.
 const SUPABASE_ANON_KEY = "sb_publishable_JyCAQnMnltVq9nESIZjNew_St2FI6Ch";
-
-/* رابط تخزين الصور: image_url مخزّن كمسار نسبي مثل images/item2.jpg */
 const IMAGE_BASE = SUPABASE_URL + "/storage/v1/object/public/product-images/";
+const HEADERS = { apikey: SUPABASE_ANON_KEY, Authorization: "Bearer " + SUPABASE_ANON_KEY };
+const WISH_KEY = "qadah_wish_v1";
+
+/* أيقونات المناسبات و"لمن الهدية" (المفتاح يُختار من الداشبورد) */
+const ICONS = {
+  heart:'<path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/>',
+  cake:'<path d="M4 20h16M5 20v-7h14v7M8 13v-3M12 13v-3M16 13v-3M8 7v.01M12 6v.01M16 7v.01"/>',
+  sparkle:'<path d="M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z"/>',
+  rings:'<circle cx="9" cy="14" r="5"/><circle cx="15" cy="14" r="5"/><path d="M10 5l2-2 2 2"/>',
+  star:'<path d="M12 4l2.4 5 5.6.8-4 3.9.9 5.5L12 16.6 7.1 19.2l.9-5.5-4-3.9 5.6-.8z"/>',
+  leaf:'<path d="M5 19c0-8 5-13 14-14 0 9-5 14-13 14M5 19l7-7"/>',
+  gift:'<path d="M4 11h16v9H4zM3 7h18v4H3zM12 7v13M12 7c-2-4-6-3-5 0M12 7c2-4 6-3 5 0"/>',
+  dove:'<path d="M4 14c3 0 5-2 6-5 1 3 4 5 8 5-2 3-5 5-9 5-2 0-4-1-5-2M10 9c0-3 2-5 5-5"/>',
+  flower:'<circle cx="12" cy="9" r="2.5"/><path d="M12 6.5c-1-3-5-2-4 1M12 6.5c1-3 5-2 4 1M9.6 10.5c-3 1-2 5 1 4M14.4 10.5c3 1 2 5-1 4M12 12v9M12 17c-2-1-4 0-5 2M12 18c2-1 4 0 5 2"/>',
+  baby:'<circle cx="12" cy="10" r="5"/><path d="M10 10v.01M14 10v.01M10.5 12.5c1 .7 2 .7 3 0M7 20c1-3 3-4 5-4s4 1 5 4"/>',
+  moon:'<path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z"/>',
+  crown:'<path d="M4 18h16l1-10-5 4-4-6-4 6-5-4z"/>',
+  her:'<circle cx="12" cy="9" r="4"/><path d="M12 13v8M9 18h6"/>',
+  him:'<circle cx="10" cy="14" r="4"/><path d="M13 11l6-6M15 5h4v4"/>',
+  mother:'<circle cx="12" cy="7" r="3"/><path d="M6 21c0-5 3-8 6-8s6 3 6 8M12 13v4"/>',
+  friend:'<circle cx="8" cy="8" r="3"/><circle cx="16" cy="8" r="3"/><path d="M3 20c0-4 2-6 5-6s5 2 5 6M11 20c0-4 2-6 5-6s5 2 5 6"/>',
+  family:'<circle cx="7" cy="7" r="2.5"/><circle cx="17" cy="7" r="2.5"/><circle cx="12" cy="12" r="2"/><path d="M3 20c0-4 2-7 4-7s4 3 4 7M13 20c0-4 2-7 4-7s4 3 4 7"/>',
+  briefcase:'<path d="M4 8h16v11H4zM9 8V5h6v3M4 13h16"/>',
+  all:'<path d="M4 4h7v7H4zM13 4h7v7h-7zM4 13h7v7H4zM13 13h7v7h-7z"/>'
+};
+function icon(key){
+  const d = ICONS[key]; if (!d) return "";
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+}
+
+const BADGES = { best_seller:"الأكثر طلباً", new:"جديد", premium:"بريميوم" };
+const BUDGETS = [
+  { id:"low",  label:"أقل من ٧٥ ألف",        test:p=>p.price < 75000 },
+  { id:"mid",  label:"من ٧٥ إلى ١٥٠ ألف",    test:p=>p.price >= 75000 && p.price <= 150000 },
+  { id:"high", label:"أكثر من ١٥٠ ألف",      test:p=>p.price > 150000 },
+  { id:"any",  label:"لا يهم",               test:()=>true }
+];
+
+const state = { all:[], occasions:[], recipients:[], occ:"", rec:"", query:"", wishOnly:false,
+                finder:{ step:0, rec:null, occ:null, budget:null } };
 
 /* =========================================================
-   جلب المنتجات من الـ view العام catalog_public
+   التحميل
    ========================================================= */
-const state = { all: [], filter: "الكل", query: "" };
+async function get(path){
+  const res = await fetch(SUPABASE_URL + "/rest/v1/" + path, { headers: HEADERS });
+  if (!res.ok) throw new Error("HTTP " + res.status);
+  return res.json();
+}
 
-async function loadProducts(){
+async function load(){
   renderSkeleton();
-
-  // إذا المفتاح لسه ما تغيّر، نشغّل وضع العرض التجريبي
-  if (!SUPABASE_ANON_KEY || SUPABASE_ANON_KEY === "PUT_YOUR_ANON_KEY_HERE"){
-    document.getElementById("devbar").hidden = false;
-    state.all = demoProducts();
-    afterLoad();
-    return;
-  }
-
-  const cols = "id,code,name_ar,name_en,price,category,occasion,note,featured,image_url";
-  const url  = `${SUPABASE_URL}/rest/v1/catalog_public?select=${cols}&order=featured.desc,code.asc`;
-
+  const cols = "id,code,name_ar,name_en,price,category,featured,image_url,occasion_ids,recipient_ids,badge";
   try{
-    const res = await fetch(url, {
-      headers: {
-        apikey: SUPABASE_ANON_KEY,
-        Authorization: "Bearer " + SUPABASE_ANON_KEY
-      }
-    });
-    if (!res.ok) throw new Error("HTTP " + res.status);
-    state.all = await res.json();
-    afterLoad();
+    state.all = await get(`catalog_public?select=${cols}&order=featured.desc,code.asc`);
   }catch(err){
-    showState(
-      "تعذّر تحميل المنتجات",
-      "تأكد من مفتاح anon ومن أن الزائر يملك SELECT على catalog_public. " + err.message
-    );
-  }
-}
-
-function afterLoad(){
-  if (!state.all.length){
-    showState("لا توجد منتجات بعد", "أضف منتجات نشطة من لوحة التحكم وستظهر هنا مباشرة.");
+    showState("تعذّر تحميل الهدايا", "تحقق من اتصالك بالإنترنت، ثم أعد تحميل الصفحة.", true);
     return;
   }
-  buildChips();
-  render();
-  setHeroImage();
-}
+  // المناسبات اختيارية: لو فشل تحميلها تبقى الصفحة تعمل بدون قسم المناسبات
+  try{
+    const [o, r] = await Promise.all([
+      get("occasions?select=id,name_ar,name_en,icon,sort_order&is_active=eq.true&order=sort_order.asc"),
+      get("recipients?select=id,name_ar,name_en,icon,sort_order&is_active=eq.true&order=sort_order.asc")
+    ]);
+    state.occasions = o.filter(x => state.all.some(p => (p.occasion_ids||[]).includes(x.id)));
+    state.recipients = r.filter(x => state.all.some(p => (p.recipient_ids||[]).includes(x.id)));
+  }catch(e){ state.occasions = []; state.recipients = []; }
 
-function setHeroImage(){
-  var el = document.getElementById("heroImg");
-  if (!el) return;
-  var pick = state.all.find(function(p){ return p.featured && imgUrl(p); })
-          || state.all.find(function(p){ return imgUrl(p); });
-  if (pick){
-    var m = el.closest(".hero__media"); if (m) m.classList.remove("is-empty");
-    el.src = imgUrl(pick); el.alt = pick.name_ar || "باقة قدّاح";
-  } else {
-    el.remove();
-  }
+  if (!state.all.length){ showState("لا توجد هدايا حالياً", "نجهّز تشكيلتنا، عد قريباً."); return; }
+  readHash();
+  setHero();
+  renderChips();
+  renderGrid();
+  renderFinder();
+  updateWishCount();
 }
 
 /* =========================================================
-   الفلترة والبحث (على البيانات المحمّلة، بدون طلبات إضافية)
+   أدوات
    ========================================================= */
-function tagOf(p){ return (p.occasion || p.category || "").trim(); }
-
-function buildChips(){
-  const tags = [...new Set(state.all.map(tagOf).filter(Boolean))];
-  const chips = ["الكل", ...tags];
-  const box = document.getElementById("chips");
-  box.innerHTML = "";
-  chips.forEach(t=>{
-    const b = document.createElement("button");
-    b.className = "chip";
-    b.textContent = t;
-    b.setAttribute("aria-pressed", t === state.filter);
-    b.onclick = ()=>{ state.filter = t; render(); syncChips(); };
-    box.appendChild(b);
-  });
+function esc(s){ return String(s==null?"":s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c])); }
+function money(n){ return Number(n||0).toLocaleString("en-US"); }
+function imgUrl(p){ if (!p.image_url) return ""; return /^https?:\/\//.test(p.image_url) ? p.image_url : IMAGE_BASE + p.image_url; }
+function nameOf(list, id){ const x = list.find(t => t.id === id); return x ? x.name_ar : ""; }
+function countWord(n){
+  if (n === 0) return "لا توجد هدايا";
+  if (n === 1) return "هدية واحدة";
+  if (n === 2) return "هديتان";
+  if (n <= 10) return n + " هدايا";
+  return n + " هدية";
 }
-function syncChips(){
-  document.querySelectorAll(".chip").forEach(c=>{
-    c.setAttribute("aria-pressed", c.textContent === state.filter);
-  });
+function toast(html){
+  const t = document.getElementById("toast");
+  t.innerHTML = html; t.classList.add("show");
+  clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove("show"), 2800);
 }
 
-function visibleProducts(){
+/* المفضلة: في المتصفح فقط حتى نبني حسابات العملاء */
+function readWish(){ try{ const a = JSON.parse(localStorage.getItem(WISH_KEY) || "[]"); return Array.isArray(a) ? a : []; }catch(e){ return []; } }
+function writeWish(a){ try{ localStorage.setItem(WISH_KEY, JSON.stringify(a)); }catch(e){} updateWishCount(); }
+function updateWishCount(){
+  const n = readWish().filter(id => state.all.some(p => p.id === id)).length;
+  const b = document.getElementById("wishCount");
+  b.textContent = n; b.style.display = n ? "" : "none";
+}
+function toggleWish(id, btn){
+  const a = readWish(); const i = a.indexOf(id);
+  if (i >= 0) a.splice(i, 1); else a.push(id);
+  writeWish(a);
+  const on = i < 0;
+  btn.setAttribute("aria-pressed", on);
+  btn.setAttribute("aria-label", on ? "إزالة من المفضلة" : "أضف إلى المفضلة");
+  if (state.wishOnly) renderGrid();
+}
+function showWishlist(){
+  state.wishOnly = true; state.occ = ""; state.rec = ""; state.query = "";
+  document.getElementById("search").value = "";
+  renderChips(); renderGrid();
+  document.getElementById("gifts").scrollIntoView({ behavior:"smooth" });
+}
+
+/* =========================================================
+   البطل
+   ========================================================= */
+function setHero(){
+  const pick = state.all.find(p => p.featured && imgUrl(p)) || state.all.find(p => imgUrl(p));
+  if (!pick) return;
+  const img = new Image();
+  img.alt = pick.name_ar || "باقة من قدّاح";
+  img.onload = () => document.getElementById("heroMedia").appendChild(img);
+  img.src = imgUrl(pick);
+}
+
+/* =========================================================
+   المناسبات و"لمن"
+   ========================================================= */
+function renderChips(){
+  const sec = document.getElementById("occasions");
+  if (!state.occasions.length){ sec.hidden = true; return; }
+  sec.hidden = false;
+  const occ = document.getElementById("occChips");
+  occ.innerHTML = [{ id:"", name_ar:"الكل", icon:"all" }].concat(state.occasions).map(o =>
+    `<button type="button" class="chip" data-occ="${esc(o.id)}" aria-pressed="${!state.wishOnly && state.occ === o.id}">${icon(o.icon)}${esc(o.name_ar)}</button>`
+  ).join("");
+  occ.querySelectorAll("button").forEach(b => b.onclick = () => {
+    state.occ = b.dataset.occ; state.wishOnly = false; syncHash(); renderChips(); renderGrid();
+  });
+
+  const rec = document.getElementById("recChips");
+  if (!state.recipients.length){ rec.hidden = true; return; }
+  rec.hidden = false;
+  rec.innerHTML = `<span class="chips__label">لمن؟</span>` + state.recipients.map(r =>
+    `<button type="button" class="chip" data-rec="${esc(r.id)}" aria-pressed="${!state.wishOnly && state.rec === r.id}">${icon(r.icon)}${esc(r.name_ar)}</button>`
+  ).join("");
+  rec.querySelectorAll("button").forEach(b => b.onclick = () => {
+    state.rec = state.rec === b.dataset.rec ? "" : b.dataset.rec; state.wishOnly = false; syncHash(); renderChips(); renderGrid();
+  });
+}
+
+/* الرابط يحفظ الاختيار: index.html#occ=<id> قابل للمشاركة */
+function syncHash(){
+  const parts = [];
+  if (state.occ) parts.push("occ=" + state.occ);
+  if (state.rec) parts.push("rec=" + state.rec);
+  history.replaceState(null, "", parts.length ? "#" + parts.join("&") : location.pathname + location.search);
+}
+function readHash(){
+  const h = new URLSearchParams(location.hash.replace(/^#/, ""));
+  const o = h.get("occ"), r = h.get("rec");
+  if (o && state.occasions.some(x => x.id === o)) state.occ = o;
+  if (r && state.recipients.some(x => x.id === r)) state.rec = r;
+}
+
+/* =========================================================
+   الشبكة
+   ========================================================= */
+function visible(){
   const q = state.query.trim().toLowerCase();
-  return state.all.filter(p=>{
-    const okTag = state.filter === "الكل" || tagOf(p) === state.filter;
-    const hay = `${p.name_ar||""} ${p.name_en||""} ${p.code||""}`.toLowerCase();
-    const okQ = !q || hay.includes(q);
-    return okTag && okQ;
+  const wish = readWish();
+  return state.all.filter(p => {
+    if (state.wishOnly && !wish.includes(p.id)) return false;
+    if (state.occ && !(p.occasion_ids||[]).includes(state.occ)) return false;
+    if (state.rec && !(p.recipient_ids||[]).includes(state.rec)) return false;
+    if (q && !`${p.name_ar||""} ${p.name_en||""} ${p.code||""}`.toLowerCase().includes(q)) return false;
+    return true;
   });
 }
 
-/* =========================================================
-   العرض
-   ========================================================= */
-function priceText(v){
-  const n = Number(v||0);
-  return n.toLocaleString("en-US") + " <span>د.ع</span>";
-}
-function imgUrl(p){
-  if (!p.image_url) return "";
-  // لو انحفظ مسار كامل بالغلط نستعمله كما هو، غير هيك نبنيه من قاعدة التخزين
-  return /^https?:\/\//.test(p.image_url) ? p.image_url : IMAGE_BASE + p.image_url;
+function gridTitle(){
+  if (state.wishOnly) return "المفضلة";
+  const o = nameOf(state.occasions, state.occ), r = nameOf(state.recipients, state.rec);
+  if (o && r) return `${o} · ${r}`;
+  return o || r || "كل الهدايا";
 }
 
-function render(){
-  const list = visibleProducts();
+function cardHTML(p){
+  const src = imgUrl(p);
+  const wished = readWish().includes(p.id);
+  const occNames = (p.occasion_ids||[]).map(id => nameOf(state.occasions, id)).filter(Boolean).slice(0, 2);
+  const badge = BADGES[p.badge]
+    ? `<span class="card__badge ${p.badge === "premium" ? "card__badge--premium" : ""}">${BADGES[p.badge]}</span>`
+    : (p.featured ? `<span class="card__badge">مختارة لك</span>` : "");
+  return `
+    <article class="card">
+      <a class="card__media ph" href="product.html?id=${encodeURIComponent(p.id)}" tabindex="-1" aria-hidden="true">
+        ${src ? `<img src="${esc(src)}" alt="" loading="lazy" onerror="this.remove()" />` : ""}
+      </a>
+      ${badge}
+      <button type="button" class="wish" data-wish="${esc(p.id)}" aria-pressed="${wished}" aria-label="${wished ? "إزالة من المفضلة" : "أضف إلى المفضلة"}">
+        <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg></span>
+      </button>
+      <div class="card__body">
+        <div class="card__meta">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18zM12 7v5l3 2"/></svg>
+          يصل اليوم${occNames.length ? " · " + occNames.map(esc).join("، ") : ""}
+        </div>
+        <h3 class="card__name" style="margin:0"><a href="product.html?id=${encodeURIComponent(p.id)}">${esc(p.name_ar || p.name_en || "")}</a></h3>
+        ${p.name_en ? `<div class="card__en">${esc(p.name_en)}</div>` : ""}
+        <div class="card__foot">
+          <div class="card__price">${money(p.price)} <small>د.ع</small></div>
+          <button type="button" class="add" data-add="${esc(p.id)}" aria-label="أضف ${esc(p.name_ar||"")} إلى السلة">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>أضف للسلة
+          </button>
+        </div>
+      </div>
+    </article>`;
+}
+
+function renderGrid(){
+  const list = visible();
   const grid = document.getElementById("grid");
-  const st   = document.getElementById("state");
-
-  document.getElementById("count").textContent =
-    `عدد المنتجات: ${list.length}` + (state.filter !== "الكل" ? ` · ${state.filter}` : "");
+  grid.classList.remove("skeleton");
+  document.getElementById("gridTitle").textContent = gridTitle();
+  document.getElementById("count").textContent = countWord(list.length);
+  document.getElementById("clearBtn").hidden = !(state.occ || state.rec || state.query || state.wishOnly);
 
   if (!list.length){
     grid.innerHTML = "";
-    showState("لا توجد نتائج", "جرّب كلمة بحث ثانية أو اختر «الكل».");
+    if (state.wishOnly) showState("لا توجد هدايا في المفضلة بعد", "اضغط على القلب في أي هدية لتحفظها هنا.");
+    else showState("لا توجد هدايا مطابقة", "جرّب مناسبة أخرى أو امسح البحث.", false, true);
     return;
   }
-  st.hidden = true;
+  document.getElementById("state").hidden = true;
+  grid.innerHTML = list.map(cardHTML).join("");
+}
 
-  grid.innerHTML = list.map(p=>{
-    const tag = tagOf(p);
-    const src = imgUrl(p);
-    const img = src
-      ? `<img src="${src}" alt="${escapeHtml(p.name_ar||"")}" loading="lazy" onerror="this.remove()" />`
-      : "";
-    const badge = p.featured ? `<div class="badge">مميّز</div>` : "";
-    return `
-      <a class="card" href="product.html?id=${p.id}">
-        <div class="card__media">${img}${badge}</div>
-        <div class="card__body">
-          ${tag ? `<div class="card__tag">${escapeHtml(tag)}</div>` : ""}
-          <div class="card__name">${escapeHtml(p.name_ar || p.name_en || "بدون اسم")}</div>
-          <div class="card__foot">
-            <div class="card__price">${priceText(p.price)}</div>
-            <span class="card__cta">
-              <span>عرض التفاصيل</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M15 6l-6 6 6 6"/></svg>
-            </span>
-          </div>
-        </div>
-      </a>`;
-  }).join("");
+document.getElementById("grid").addEventListener("click", e => {
+  const add = e.target.closest("[data-add]");
+  if (add){
+    const p = state.all.find(x => x.id === add.dataset.add);
+    Cart.add(add.dataset.add, 1);
+    toast(`أُضيفت «${esc(p ? p.name_ar : "")}» إلى السلة <a href="cart.html">إتمام الطلب</a>`);
+    return;
+  }
+  const w = e.target.closest("[data-wish]");
+  if (w) toggleWish(w.dataset.wish, w);
+});
+
+function clearFilters(){
+  state.occ = ""; state.rec = ""; state.query = ""; state.wishOnly = false;
+  document.getElementById("search").value = "";
+  syncHash(); renderChips(); renderGrid();
 }
 
 function renderSkeleton(){
   const grid = document.getElementById("grid");
   grid.classList.add("skeleton");
-  grid.innerHTML = Array.from({length:8}).map(()=>`
-    <div class="card">
-      <div class="card__media"></div>
-      <div class="card__body">
-        <div class="card__tag">تحميل</div>
-        <div class="card__name">تحميل المنتج</div>
-        <div class="card__foot"><div class="card__price">00000</div></div>
-      </div>
-    </div>`).join("");
-  setTimeout(()=>grid.classList.remove("skeleton"), 0);
+  grid.innerHTML = Array.from({ length:8 }).map(() => `
+    <div class="card"><div class="card__media"></div><div class="card__body">
+      <div class="card__meta">تحميل</div><div class="card__name">تحميل اسم الهدية</div>
+      <div class="card__foot"><div class="card__price">000,000</div></div></div></div>`).join("");
 }
 
-function showState(title, body){
-  document.getElementById("grid").innerHTML = "";
+function showState(title, body, retry, clear){
   const st = document.getElementById("state");
   st.hidden = false;
-  st.innerHTML = `<h2>${escapeHtml(title)}</h2><p>${escapeHtml(body)}</p>`;
+  st.innerHTML = `<h2>${esc(title)}</h2><p>${esc(body)}</p>` +
+    (retry ? `<button class="btn btn--navy" type="button" onclick="location.reload()">إعادة المحاولة</button>` : "") +
+    (clear ? `<button class="btn btn--ghost" type="button" onclick="clearFilters()">عرض كل الهدايا</button>` : "");
+  if (retry) document.getElementById("grid").innerHTML = "";
 }
 
-function escapeHtml(s){
-  return String(s).replace(/[&<>"']/g, c => (
-    {"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]
-  ));
-}
-
-/* =========================================================
-   بيانات تجريبية للعرض فقط (تختفي عند إضافة مفتاح anon)
-   ========================================================= */
-function demoProducts(){
-  return [
-    {id:1, code:101, name_ar:"باقة الورد الجوري", occasion:"رومانسية", price:45000, featured:true},
-    {id:2, code:102, name_ar:"تنسيق الأوركيد الأبيض", occasion:"أناقة", price:65000, featured:true},
-    {id:3, code:103, name_ar:"ورد العروس", occasion:"أعراس", price:120000, featured:true},
-    {id:4, code:104, name_ar:"صندوق الورد المخملي", occasion:"هدايا", price:55000},
-    {id:5, code:105, name_ar:"باقة التوليب الملكي", occasion:"مناسبات", price:40000},
-    {id:6, code:106, name_ar:"تنسيق الليليوم", occasion:"تعزية", price:50000},
-    {id:7, code:107, name_ar:"باقة الجربيرا الملوّنة", occasion:"تهاني", price:35000},
-    {id:8, code:108, name_ar:"صندوق الورد والشوكولا", occasion:"هدايا", price:70000},
-  ];
-}
-
-/* =========================================================
-   التشغيل
-   ========================================================= */
-document.getElementById("search").addEventListener("input", e=>{
-  state.query = e.target.value;
-  render();
+document.getElementById("search").addEventListener("input", e => {
+  state.query = e.target.value; state.wishOnly = false; renderGrid();
 });
-loadProducts();
+
+/* =========================================================
+   محتار ماذا تهدي؟ (لمن ← المناسبة ← الميزانية)
+   ========================================================= */
+function finderSteps(){
+  const steps = [];
+  if (state.recipients.length) steps.push({ key:"rec", q:"لمن الهدية؟",
+    opts: state.recipients.map(r => ({ v:r.id, l:r.name_ar })).concat([{ v:"", l:"لأي شخص" }]) });
+  if (state.occasions.length) steps.push({ key:"occ", q:"ما المناسبة؟",
+    opts: state.occasions.map(o => ({ v:o.id, l:o.name_ar })) });
+  steps.push({ key:"budget", q:"كم ميزانيتك تقريباً؟", opts: BUDGETS.map(b => ({ v:b.id, l:b.label })) });
+  return steps;
+}
+
+function finderMatches(){
+  const f = state.finder, b = BUDGETS.find(x => x.id === f.budget) || BUDGETS[3];
+  const base = state.all.filter(p => b.test(p));
+  const score = p => ((f.occ && (p.occasion_ids||[]).includes(f.occ)) ? 2 : 0) + ((f.rec && (p.recipient_ids||[]).includes(f.rec)) ? 1 : 0);
+  let list = base.filter(p => (!f.occ || (p.occasion_ids||[]).includes(f.occ)) && (!f.rec || (p.recipient_ids||[]).includes(f.rec)));
+  let exact = true;
+  if (!list.length){ list = base.filter(p => score(p) > 0).sort((a,b) => score(b) - score(a)); exact = false; }
+  if (!list.length){ list = base; exact = false; }
+  return { list: list.slice(0, 3), total: list.length, exact };
+}
+
+function renderFinder(){
+  const sec = document.getElementById("finder");
+  const steps = finderSteps();
+  sec.hidden = state.all.length < 2;
+  const body = document.getElementById("finderBody");
+  const f = state.finder;
+  const bars = `<div class="bars">${steps.map((_, i) => `<i class="${i <= f.step ? "on" : ""}"></i>`).join("")}</div>`;
+
+  if (f.step < steps.length){
+    const s = steps[f.step];
+    body.innerHTML = bars +
+      `<div class="finder__step">السؤال ${f.step + 1} من ${steps.length}</div>
+       <div class="finder__q">${s.q}</div>
+       <div class="opts">${s.opts.map(o => `<button type="button" class="opt" data-v="${esc(o.v)}">${esc(o.l)}</button>`).join("")}</div>
+       ${f.step > 0 ? `<button type="button" class="finder__back" id="fBack">رجوع للسؤال السابق</button>` : ""}`;
+    body.querySelectorAll(".opt").forEach(b => b.onclick = () => { f[s.key] = b.dataset.v || null; f.step++; renderFinder(); });
+    const back = document.getElementById("fBack"); if (back) back.onclick = () => { f.step--; renderFinder(); };
+    return;
+  }
+
+  const m = finderMatches();
+  const summary = [nameOf(state.recipients, f.rec), nameOf(state.occasions, f.occ), (BUDGETS.find(b => b.id === f.budget) || {}).label]
+    .filter(Boolean).map(esc).join(" · ");
+  body.innerHTML = bars +
+    `<div class="finder__step">${summary}</div>
+     <div class="finder__q">${m.exact ? "اخترنا لك " + countWord(m.list.length) : "لم نجد تطابقاً كاملاً، هذه أقرب الخيارات"}</div>
+     <div class="matches">${m.list.map(p => `
+       <a class="match" href="product.html?id=${encodeURIComponent(p.id)}">
+         <span class="match__img ph">${imgUrl(p) ? `<img src="${esc(imgUrl(p))}" alt="" loading="lazy" onerror="this.remove()" />` : ""}</span>
+         <span class="match__name">${esc(p.name_ar)}</span>
+         <span class="match__price">${money(p.price)} د.ع</span>
+       </a>`).join("")}</div>
+     <div class="finder__actions">
+       ${m.exact && (f.occ || f.rec) ? `<button type="button" class="btn btn--rose" id="fApply">اعرض كل المطابق</button>` : ""}
+       <button type="button" class="btn btn--line" id="fReset">من جديد</button>
+     </div>`;
+  const apply = document.getElementById("fApply");
+  if (apply) apply.onclick = () => {
+    state.occ = f.occ || ""; state.rec = f.rec || ""; state.wishOnly = false; state.query = "";
+    document.getElementById("search").value = "";
+    syncHash(); renderChips(); renderGrid();
+    document.getElementById("gifts").scrollIntoView({ behavior:"smooth" });
+  };
+  document.getElementById("fReset").onclick = () => { state.finder = { step:0, rec:null, occ:null, budget:null }; renderFinder(); };
+}
+
+load();
 </script>
 </body>
 </html>
