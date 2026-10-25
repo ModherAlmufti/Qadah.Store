@@ -267,6 +267,7 @@
   <div class="toast" id="toast" role="status"></div>
 
 <script src="cart.js"></script>
+<script src="pgallery.js"></script>
 <script>
   const SUPABASE_URL = "https://tsqkqoibfxachknfmzjj.supabase.co";
   const SUPABASE_KEY = "sb_publishable_JyCAQnMnltVq9nESIZjNew_St2FI6Ch"; // publishable / anon key
@@ -307,7 +308,9 @@
 
     const media = $("pMedia");
     const src = imgUrl(p);
-    if (src){ const img = new Image(); img.alt = p.name_ar || ""; img.onload = () => media.prepend(img); img.src = src; }
+    /* الغلاف + الصور الإضافية (pgallery.js)؛ إن لم يُحمَّل الملف نعرض الغلاف فقط كما كان */
+    if (window.QadahPGallery) QadahPGallery.mount(media, src, p.gallery, p.name_ar);
+    else if (src){ const img = new Image(); img.alt = p.name_ar || ""; img.onload = () => media.prepend(img); img.src = src; }
     if (BADGES[p.badge]) media.insertAdjacentHTML("beforeend", `<span class="media__badge ${p.badge === "premium" ? "media__badge--premium" : ""}">${BADGES[p.badge]}</span>`);
 
     const occ = occasions.filter(o => (p.occasion_ids||[]).includes(o.id));
