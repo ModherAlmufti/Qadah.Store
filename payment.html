@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex" />
+<title>قدّاح · الدفع</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Cormorant+Garamond:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --navy:#01183a; --navy-dark:#000f28;
+    --rose:#dca096; --rose-strong:#c98578; --rose-soft:#f4e4df;
+    --cream-page:#fbf6ee; --cream:#f5ede0; --card:#fffdfa;
+    --ink:#24303c; --muted:#8f8781; --line:#ece2d4;
+    --shadow:0 14px 34px rgba(1,24,58,.08);
+    --radius:18px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body{ font-family:"Tajawal", system-ui, sans-serif; background:var(--cream-page);
+    color:var(--ink); line-height:1.7; min-height:100vh; }
+  a { color: inherit; text-decoration: none; }
+
+  /* ===== ترويسة وفوتر موحّدة (نفس الصفحة الرئيسية) ===== */
+  .latin{ font-family:"Cormorant Garamond", Georgia, serif; letter-spacing:4px; font-weight:600; color:#b0705f; direction:ltr; unicode-bidi:isolate; }
+  .hwrap{ max-width:1240px; margin:0 auto; padding:0 24px; }
+  .deliverbar{ background:var(--navy); color:var(--cream); text-align:center; font-size:13px; font-weight:500; padding:9px 16px; }
+  .site-head{ background:var(--cream); border-bottom:1px solid var(--line); position:sticky; top:0; z-index:30; }
+  .head-inner{ display:flex; align-items:center; gap:28px; height:76px; }
+  .brand{ display:flex; align-items:center; gap:10px; flex-shrink:0; }
+  .brand__icon{ width:44px; height:44px; object-fit:contain; }
+  .brand__text{ display:flex; flex-direction:column; align-items:center; line-height:1; }
+  .brand__ar{ font-weight:800; font-size:26px; color:var(--navy); }
+  .brand__en{ font-family:"Cormorant Garamond", Georgia, serif; font-size:12px; font-weight:600; color:#b0705f; letter-spacing:5px; margin-top:4px; }
+  .head-nav{ flex:1; display:flex; gap:26px; font-weight:700; font-size:15px; color:var(--navy); }
+  .head-nav a{ padding:8px 0; border-bottom:2px solid transparent; transition:border-color .15s; }
+  .head-nav a:hover{ border-color:var(--rose); }
+  .head-actions{ display:flex; align-items:center; gap:4px; margin-inline-start:auto; }
+  .icon-btn{ position:relative; width:44px; height:44px; border-radius:12px; display:inline-flex; align-items:center; justify-content:center; color:var(--navy); }
+  .icon-btn:hover{ background:rgba(1,24,58,.05); }
+  .icon-btn svg{ width:22px; height:22px; }
+  .cart-btn{ height:44px; padding:0 16px; border-radius:12px; background:var(--navy); color:var(--cream);
+    display:inline-flex; align-items:center; gap:8px; font-weight:700; font-size:14px; margin-inline-start:8px; }
+  .cart-btn svg{ width:19px; height:19px; }
+  .cart-btn:hover{ background:var(--navy-dark); }
+  .cart-btn b{ background:var(--rose); color:var(--navy); min-width:20px; height:20px; padding:0 6px; border-radius:999px;
+    font-size:12px; font-weight:800; display:inline-flex; align-items:center; justify-content:center; }
+  .site-foot{ background:var(--navy); color:var(--cream); margin-top:40px; padding:44px 0 26px; }
+  .foot-grid{ display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:40px; }
+  .foot-brand{ font-size:28px; font-weight:800; }
+  .foot-grid h3{ color:var(--rose); font-size:15px; font-weight:800; margin:0 0 12px; }
+  .foot-grid ul{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:10px; font-size:15px; }
+  .foot-grid a:hover{ color:var(--rose); }
+  .foot-legal{ border-top:1px solid rgba(251,246,238,.15); margin-top:30px; padding-top:16px; font-size:13px; color:#d9d2c8; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+  @media (max-width:1080px){ .head-nav{ display:none; } }
+  @media (max-width:820px){ .foot-grid{ grid-template-columns:1fr 1fr; } .foot-grid > div:first-child{ grid-column:1 / -1; } }
+  @media (max-width:560px){
+    .hwrap{ padding:0 16px; } .head-inner{ height:64px; gap:8px; }
+    .brand__icon{ width:36px; height:36px; } .brand__ar{ font-size:22px; }
+    .cart-btn span{ display:none; } .cart-btn{ padding:0 12px; }
+    .foot-legal{ flex-direction:column; }
+  }
+
+  /* ===== صفحة نتيجة الدفع ===== */
+  .wrap{ max-width:560px; margin:0 auto; padding:40px 20px 70px; }
+  .pay-card{ background:var(--card); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); padding:34px 26px; text-align:center; }
+  .pay-icon{ width:72px; height:72px; border-radius:50%; margin:0 auto 14px; display:grid; place-items:center; font-size:34px; }
+  .pay-icon.ok{ background:#e3f1ea; color:#2f6b4f; } .pay-icon.wait{ background:var(--rose-soft); color:var(--rose-strong); }
+  .pay-icon.bad{ background:#f6e3df; color:#a9584b; }
+  .pay-card h1{ font-size:24px; font-weight:800; color:var(--navy); margin:0 0 8px; }
+  .pay-card p{ color:var(--muted); margin:0 0 6px; }
+  .pay-code{ display:inline-block; direction:ltr; unicode-bidi:isolate; margin:12px 0 4px; font-size:24px; font-weight:800; color:var(--rose-strong); letter-spacing:1px; }
+  .pay-total{ font-weight:700; color:var(--ink); margin-bottom:6px; }
+  .pay-actions{ display:flex; flex-direction:column; gap:10px; margin-top:22px; }
+  .btn-primary{ height:52px; border:0; border-radius:12px; background:var(--navy); color:var(--cream); font-family:inherit; font-weight:700; font-size:16px; cursor:pointer; display:grid; place-items:center; }
+  .btn-primary:hover{ background:var(--navy-dark); } .btn-primary:disabled{ opacity:.5; cursor:not-allowed; }
+  .btn-ghost{ height:50px; border:1px solid var(--line); border-radius:12px; background:transparent; color:var(--ink); font-family:inherit; font-weight:700; font-size:16px; cursor:pointer; display:grid; place-items:center; }
+  .btn-ghost:hover{ background:var(--cream); }
+  .help{ margin-top:18px; font-size:14px; color:var(--muted); }
+  .ltr{ direction:ltr; unicode-bidi:isolate; }
+  .spinner{ width:34px; height:34px; border:3px solid var(--rose-soft); border-top-color:var(--rose-strong); border-radius:50%; animation:spin 1s linear infinite; margin:0 auto; }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce){ .spinner{ animation-duration:3s; } }
+  .test-note{ background:var(--rose-soft); color:var(--navy); border-radius:12px; padding:10px 14px; font-size:14px; font-weight:700; margin-bottom:16px; text-align:center; }
+</style>
+</head>
+<body>
+
+  <div class="deliverbar">توصيل مجاني للطلبات فوق ١٥٠٬٠٠٠ د.ع · بغداد في نفس اليوم</div>
+
+  <header class="site-head">
+    <div class="hwrap head-inner">
+      <a class="brand" href="index.html" aria-label="قدّاح، الصفحة الرئيسية">
+        <img class="brand__icon" src="icon-cream.png" alt="" onerror="this.style.display='none'" />
+        <span class="brand__text"><span class="brand__ar">قدّاح</span><span class="brand__en">QADAH</span></span>
+      </a>
+      <nav class="head-nav" aria-label="القائمة الرئيسية">
+        <a href="index.html#occasions">المناسبات</a>
+        <a href="index.html#gifts">كل الهدايا</a>
+        <a href="index.html#finder">محتار ماذا تهدي؟</a>
+        <a href="index.html#help">المساعدة</a>
+      </nav>
+      <div class="head-actions">
+        <a class="icon-btn" href="index.html#wish" aria-label="المفضلة">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"/></svg>
+        </a>
+        <a class="cart-btn" href="cart.html" aria-label="السلة">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8a3 3 0 0 1 6 0"/></svg>
+          <span>السلة</span>
+          <b data-cart-count style="display:none">0</b>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div id="testNote" class="test-note" style="display:none"></div>
+    <div class="pay-card" id="card" aria-live="polite">
+      <div class="spinner"></div>
+      <p style="margin-top:14px">جارٍ التحقق من الدفع…</p>
+    </div>
+  </main>
+
+  <footer class="site-foot">
+    <div class="hwrap">
+      <div class="foot-grid">
+        <div>
+          <div class="foot-brand">قدّاح</div>
+          <div class="latin" style="color:var(--rose);font-size:14px;margin-top:4px">WE DELIVER EMOTIONS</div>
+          <div style="margin-top:14px;font-size:14px;color:#d9d2c8" dir="ltr">@qadah.iq</div>
+        </div>
+        <div>
+          <h3>تسوّق</h3>
+          <ul><li><a href="index.html#occasions">المناسبات</a></li><li><a href="index.html#gifts">كل الهدايا</a></li><li><a href="cart.html">السلة</a></li></ul>
+        </div>
+        <div>
+          <h3>المساعدة</h3>
+          <ul><li><a href="https://wa.me/9647754549417" target="_blank" rel="noopener">واتساب</a></li><li><a href="privacy.html">سياسة الخصوصية</a></li></ul>
+        </div>
+      </div>
+      <div class="foot-legal"><span>Al Hanoot for General Trading</span><span>© قدّاح</span></div>
+    </div>
+  </footer>
+
+  <script src="cart.js"></script>
+  <script>
+    const SUPABASE_URL = "https://tsqkqoibfxachknfmzjj.supabase.co";
+    const SUPABASE_KEY = "sb_publishable_JyCAQnMnltVq9nESIZjNew_St2FI6Ch"; // publishable / anon key
+    const PAY_URL = SUPABASE_URL + "/functions/v1/qi-gateway-pay";
+    const PAY_PENDING_KEY = "qadah_pay_pending";
+    const WHATSAPP = "0775 454 9417";
+    const POLL_AT = [3, 8, 16, 31, 61]; // ثوانٍ
+
+    const $ = (id) => document.getElementById(id);
+    const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+    const fmt = (n) => (n == null || isNaN(n)) ? "" : new Intl.NumberFormat("en-US").format(n) + " د.ع";
+
+    const params = new URLSearchParams(location.search);
+
+    // ===== وضع الاختبار (للفريق فقط) =====
+    if (params.has("enable_test")) {
+      try {
+        if (params.get("enable_test") === "1") localStorage.setItem("qadah_pay_test", "1");
+        else localStorage.removeItem("qadah_pay_test");
+      } catch (e) {}
+    }
+    let testOn = false;
+    try { testOn = localStorage.getItem("qadah_pay_test") === "1"; } catch (e) {}
+
+    function readPending() {
+      try {
+        const p = JSON.parse(localStorage.getItem(PAY_PENDING_KEY) || "null");
+        if (p && p.code && Date.now() - (p.at || 0) < 2 * 3600 * 1000) return p;
+      } catch (e) {}
+      return null;
+    }
+    function clearPending() { try { localStorage.removeItem(PAY_PENDING_KEY); } catch (e) {} }
+
+    const pending = readPending();
+    const code = (params.get("order") || (pending && pending.code) || "").trim().toUpperCase();
+    const orderId = pending && pending.code === code ? pending.id : null;
+
+    async function api(action) {
+      const res = await fetch(PAY_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", apikey: SUPABASE_KEY, Authorization: "Bearer " + SUPABASE_KEY },
+        body: JSON.stringify({ action, orderId: orderId || undefined, orderCode: code || undefined }),
+      });
+      const data = await res.json().catch(() => ({}));
+      data._http = res.status;
+      return data;
+    }
+
+    function orderBlock(o) {
+      if (!o) return code ? '<div class="pay-code">' + esc(code) + '</div>' : "";
+      return '<div class="pay-code">' + esc(o.order_code) + '</div>' + (o.total ? '<div class="pay-total">' + esc(fmt(o.total)) + '</div>' : "");
+    }
+    const helpLine = '<p class="help">تحتاج مساعدة؟ واتساب <span class="ltr">' + WHATSAPP + '</span></p>';
+
+    function showPaid(o) {
+      clearPending();
+      if (pending && pending.code === code) Cart.clear(); // only the cart that made this order
+      $("card").innerHTML =
+        '<div class="pay-icon ok">✓</div><h1>تم الدفع واستلام طلبك</h1>' +
+        '<p>شكراً لك. نبدأ بتجهيز هديتك الآن.</p>' + orderBlock(o) +
+        '<div class="pay-actions"><a class="btn-primary" href="index.html">متابعة التسوّق</a></div>' + helpLine;
+    }
+
+    function showRefunded(o) {
+      clearPending();
+      $("card").innerHTML =
+        '<div class="pay-icon wait">↺</div><h1>تم استرجاع المبلغ</h1>' +
+        '<p>أُعيد مبلغ هذا الطلب إلى بطاقتك.</p>' + orderBlock(o) +
+        '<div class="pay-actions"><a class="btn-ghost" href="index.html">العودة للرئيسية</a></div>' + helpLine;
+    }
+
+    let pollIdx = 0, pollTimer = null;
+    function showPending(o) {
+      $("card").innerHTML =
+        '<div class="pay-icon wait"><div class="spinner" style="width:30px;height:30px"></div></div>' +
+        '<h1>نتأكد من الدفع</h1><p>لم يصلنا تأكيد الدفع بعد. هذا يأخذ لحظات عادةً.</p>' + orderBlock(o) +
+        '<div class="pay-actions"><button class="btn-primary" id="checkBtn" type="button">تحقق من الدفع</button>' +
+        '<button class="btn-ghost" id="payAgain" type="button">لم أكمل الدفع، افتح صفحة الدفع</button></div>' + helpLine;
+      $("checkBtn").onclick = () => check(true);
+      $("payAgain").onclick = retry;
+      if (pollIdx < POLL_AT.length && !pollTimer) {
+        const wait = (POLL_AT[pollIdx] - (pollIdx ? POLL_AT[pollIdx - 1] : 0)) * 1000;
+        pollIdx++;
+        pollTimer = setTimeout(() => { pollTimer = null; check(false); }, wait);
+      }
+    }
+
+    function showDeclined(o, note) {
+      $("card").innerHTML =
+        '<div class="pay-icon bad">!</div><h1>لم تتم عملية الدفع</h1>' +
+        '<p>لم يُخصم أي مبلغ من بطاقتك. طلبك محفوظ ويمكنك المحاولة مرة ثانية.</p>' + orderBlock(o) +
+        (note ? '<p style="font-size:13px">' + esc(note) + '</p>' : "") +
+        '<div class="pay-actions"><button class="btn-primary" id="retryBtn" type="button">إعادة المحاولة</button>' +
+        '<a class="btn-ghost" href="cart.html">العودة إلى السلة</a></div>' + helpLine;
+      $("retryBtn").onclick = retry;
+    }
+
+    function showError(title, text) {
+      $("card").innerHTML =
+        '<div class="pay-icon bad">!</div><h1>' + esc(title) + '</h1><p>' + esc(text) + '</p>' + orderBlock(null) +
+        '<div class="pay-actions"><button class="btn-primary" id="againBtn" type="button">حاول مرة ثانية</button>' +
+        '<a class="btn-ghost" href="index.html">العودة للرئيسية</a></div>' + helpLine;
+      $("againBtn").onclick = () => check(true);
+    }
+
+    async function check(manual) {
+      if (!code) { showError("لا يوجد طلب", "لم نجد رقم طلب في الرابط."); return; }
+      if (manual) { const b = $("checkBtn") || $("againBtn"); if (b) { b.disabled = true; b.textContent = "جارٍ التحقق…"; } }
+      let d;
+      try { d = await api("status"); } catch (e) { showError("تعذّر الاتصال", "تحقق من الإنترنت وحاول مرة ثانية."); return; }
+      if (!d.ok) {
+        if (d.error === "order_not_found") showError("لم نجد الطلب", "تأكد من الرابط أو تواصل معنا.");
+        else if (d.error === "payments_disabled") showError("الدفع غير متاح الآن", "طلبك محفوظ، وسنتواصل معك لإتمام الدفع.");
+        else showError("تعذّر التحقق من الدفع", "حاول مرة ثانية بعد قليل.");
+        return;
+      }
+      if (d.state === "paid") return showPaid(d.order);
+      if (d.state === "refunded") return showRefunded(d.order);
+      if (d.state === "pending") return showPending(d.order);
+      if (d.state === "none" && params.get("e")) return showDeclined(d.order, "تعذّر فتح صفحة الدفع.");
+      if (d.state === "none") return showPending(d.order);
+      return showDeclined(d.order); // failed / canceled
+    }
+
+    async function retry() {
+      const b = $("retryBtn") || $("payAgain");
+      if (b) { b.disabled = true; b.textContent = "جارٍ فتح صفحة الدفع…"; }
+      let d;
+      try { d = await api("pay"); } catch (e) { showError("تعذّر الاتصال", "تحقق من الإنترنت وحاول مرة ثانية."); return; }
+      if (d.ok && d.state === "redirect" && d.paymentUrl) { location.href = d.paymentUrl; return; }
+      if (d.ok && d.state === "paid") return showPaid(d.order);
+      if (d.error === "busy") { setTimeout(retry, d.retryAfterMs || 2000); return; }
+      if (d.error === "link_window_passed" || d.error === "order_not_payable") {
+        showError("لا يمكن دفع هذا الطلب الآن", "تواصل معنا عبر واتساب لإكماله.");
+        return;
+      }
+      showDeclined(d.order || null, "تعذّر فتح صفحة الدفع. حاول بعد قليل.");
+    }
+
+    // ===== التشغيل =====
+    if (testOn) { $("testNote").textContent = "وضع اختبار الدفع مفعّل على هذا الجهاز"; $("testNote").style.display = ""; }
+    if (!code && params.has("enable_test")) {
+      $("card").innerHTML = '<div class="pay-icon ' + (testOn ? 'ok">✓' : 'wait">–') + '</div><h1>' +
+        (testOn ? "تم تفعيل وضع اختبار الدفع" : "تم إيقاف وضع اختبار الدفع") + '</h1>' +
+        '<p>' + (testOn ? "الطلبات من هذا المتصفح ستنتقل لصفحة الدفع." : "الطلبات من هذا المتصفح لن تمر بالدفع.") + '</p>' +
+        '<div class="pay-actions"><a class="btn-primary" href="index.html">إلى المتجر</a></div>';
+    } else {
+      check(false);
+    }
+  </script>
+</body>
+</html>

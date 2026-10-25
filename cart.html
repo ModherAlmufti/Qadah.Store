@@ -356,6 +356,39 @@
     const SUPABASE_KEY = "sb_publishable_JyCAQnMnltVq9nESIZjNew_St2FI6Ch"; // publishable / anon key
     const CREATE_ORDER_URL = SUPABASE_URL + "/functions/v1/create_order";
 
+    // ===== الدفع الإلكتروني (بوابة Qi) =====
+    // "off": بدون دفع (كما كان) · "test": الدفع لمن فعّل وضع الاختبار فقط · "live": الدفع لكل العملاء
+    // تفعيل وضع الاختبار على جهازك: افتح payment.html?enable_test=1 (وللإلغاء ?enable_test=0)
+    const PAY_MODE = "test";
+    const PAY_URL = SUPABASE_URL + "/functions/v1/qi-gateway-pay";
+    const PAY_PENDING_KEY = "qadah_pay_pending";
+    function payEnabled() {
+      if (PAY_MODE === "live") return true;
+      if (PAY_MODE !== "test") return false;
+      try { return localStorage.getItem("qadah_pay_test") === "1"; } catch (e) { return false; }
+    }
+
+    // ينشئ دفعة للطلب وينقل العميل لصفحة الدفع. أي حالة أخرى تُعرض في payment.html
+    async function startPayment(o) {
+      try {
+        localStorage.setItem(PAY_PENDING_KEY, JSON.stringify({ id: o.id || null, code: o.order_code, total: o.total, at: Date.now() }));
+      } catch (e) {}
+      const resultPage = "payment.html?order=" + encodeURIComponent(o.order_code);
+      try {
+        const res = await fetch(PAY_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json", apikey: SUPABASE_KEY, Authorization: "Bearer " + SUPABASE_KEY },
+          body: JSON.stringify({ action: "pay", orderId: o.id || undefined, orderCode: o.order_code }),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (data.ok && data.state === "redirect" && data.paymentUrl) { window.location.href = data.paymentUrl; return; }
+        window.location.href = resultPage + (data.ok ? "" : "&e=" + encodeURIComponent(data.error || res.status));
+      } catch (err) {
+        console.error(err);
+        window.location.href = resultPage + "&e=network";
+      }
+    }
+
     const $ = (id) => document.getElementById(id);
 
     function formatPrice(p) {
@@ -557,6 +590,7 @@
 
       const btn = $("confirmOrder");
       const label = btn.textContent;
+      let redirecting = false;
       btn.disabled = true;
       btn.textContent = "جارٍ الإرسال…";
       $("formError").textContent = "";
@@ -577,6 +611,13 @@
           return;
         }
         const o = data.order;
+        if (payEnabled()) {
+          // السلة تبقى حتى يتم الدفع، وتُفرّغ في payment.html بعد النجاح
+          btn.textContent = "جارٍ فتح صفحة الدفع…";
+          redirecting = true;
+          await startPayment(o);
+          return;
+        }
         Cart.clear();
         $("successCode").textContent = o.order_code;
         $("successTotal").textContent = "الإجمالي: " + formatPrice(o.total);
@@ -587,8 +628,10 @@
         console.error(err);
         $("formError").textContent = "خطأ بالاتصال. حاول مرة ثانية.";
       } finally {
-        btn.disabled = false;
-        btn.textContent = label;
+        if (!redirecting) {
+          btn.disabled = false;
+          btn.textContent = label;
+        }
       }
     }
 
