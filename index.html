@@ -105,6 +105,18 @@
   .chips--small .chip{ min-height:44px; font-size:14px; padding:0 16px; }
   .chips__label{ font-size:14px; color:var(--muted); font-weight:700; align-self:center; margin-inline-end:4px; }
 
+  /* ===== فلتر اللون ===== */
+  .colors{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:-6px 0 22px}
+  .colors[hidden]{display:none}
+  .colors__label{font-size:14px;color:var(--muted);font-weight:700;margin-inline-end:4px}
+  .cchip{min-height:44px;padding:0 14px 0 16px;border-radius:999px;border:1px solid var(--line);background:var(--card);
+    color:var(--ink);font-size:14px;font-weight:700;display:inline-flex;align-items:center;gap:8px;transition:border-color .15s,background .15s}
+  .cchip:hover{border-color:var(--rose-strong)}
+  .cchip[aria-pressed="true"]{background:var(--navy);border-color:var(--navy);color:var(--cream)}
+  .sw{width:18px;height:18px;border-radius:50%;border:1px solid rgba(1,24,58,.2);flex-shrink:0}
+  .sw--mix{background:conic-gradient(#c62828,#f2c94c,#4caf50,#4a74c9,#8e5bb5,#e991a8,#c62828)}
+  .cchip[aria-pressed="true"] .sw{border-color:rgba(251,246,238,.6)}
+
   /* ===== الشبكة ===== */
   .gifts{ padding:40px 0 0; }
   .gifts__bar{ display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap; margin-bottom:22px; }
@@ -236,6 +248,9 @@
     .chips{ flex-wrap:nowrap; overflow-x:auto; justify-content:flex-start; margin-inline:-16px; padding:0 16px 4px; scrollbar-width:none; }
     .chips::-webkit-scrollbar{ display:none; }
     .chip{ flex-shrink:0; }
+    .colors{ flex-wrap:nowrap; overflow-x:auto; margin-inline:-16px; padding:0 16px 4px; scrollbar-width:none; }
+    .colors::-webkit-scrollbar{ display:none; }
+    .cchip, .colors__label{ flex-shrink:0; }
     .gifts__bar{ flex-direction:column; align-items:stretch; }
     .search-wrap{ width:auto; flex:1; }
     .card__body{ padding:12px; }
@@ -302,6 +317,9 @@
       </div>
     </section>
 
+    <!-- الشريط المتحرك: الأصناف المختارة من الداشبورد (pbanner.js) -->
+    <section class="wrap" id="bannerSec" hidden style="--qb-pad:0;margin-bottom:20px"></section>
+
     <!-- الثقة -->
     <section class="wrap" aria-label="لماذا قدّاح">
       <div class="trust">
@@ -349,6 +367,7 @@
           <button class="clear-btn" id="clearBtn" type="button" hidden onclick="clearFilters()">عرض الكل</button>
         </div>
       </div>
+      <div class="colors" id="colorChips" role="group" aria-label="اللون" hidden></div>
       <div class="grid" id="grid"></div>
       <div class="state" id="state" hidden></div>
     </section>
@@ -402,6 +421,7 @@
   <div class="toast" id="toast" role="status"></div>
 
 <script src="cart.js"></script>
+<script src="pbanner.js"></script>
 <script>
 /* =========================================================
    الإعدادات
@@ -447,7 +467,7 @@ const BUDGETS = [
   { id:"any",  label:"لا يهم",               test:()=>true }
 ];
 
-const state = { all:[], occasions:[], recipients:[], occ:"", rec:"", query:"", wishOnly:false,
+const state = { all:[], occasions:[], recipients:[], colors:[], occ:"", rec:"", col:"", query:"", wishOnly:false,
                 finder:{ step:0, rec:null, occ:null, budget:null } };
 
 /* =========================================================
@@ -463,7 +483,9 @@ async function load(){
   renderSkeleton();
   const cols = "id,code,name_ar,name_en,price,category,featured,image_url,occasion_ids,recipient_ids,badge";
   try{
-    state.all = await get(`catalog_public?select=${cols}&order=featured.desc,code.asc`);
+    // ترتيب العرض من الداشبورد. إن لم تكن أعمدة الترتيب موجودة بعد نرجع للترتيب القديم.
+    try{ state.all = await get(`catalog_public?select=${cols},sort_order,in_banner,color_ids&order=sort_order.asc,code.asc`); }
+    catch(e){ state.all = await get(`catalog_public?select=${cols}&order=featured.desc,code.asc`); }
   }catch(err){
     showState("تعذّر تحميل الهدايا", "تحقق من اتصالك بالإنترنت، ثم أعد تحميل الصفحة.", true);
     return;
@@ -477,16 +499,22 @@ async function load(){
     state.occasions = o.filter(x => state.all.some(p => (p.occasion_ids||[]).includes(x.id)));
     state.recipients = r.filter(x => state.all.some(p => (p.recipient_ids||[]).includes(x.id)));
   }catch(e){ state.occasions = []; state.recipients = []; }
+  // الألوان اختيارية أيضاً: نعرض فقط الألوان التي لها أصناف
+  try{
+    const c = await get("product_colors?select=id,name_ar,name_en,hex,sort_order&is_active=eq.true&order=sort_order.asc");
+    state.colors = c.filter(x => state.all.some(p => (p.color_ids||[]).includes(x.id)));
+  }catch(e){ state.colors = []; }
 
   if (!state.all.length){ showState("لا توجد هدايا حالياً", "نجهّز تشكيلتنا، عد قريباً."); return; }
   readHash();
   setHero();
+  renderBanner();
   renderChips();
   renderGrid();
   renderFinder();
   updateWishCount();
   // روابط من الصفحات الأخرى (#wish أو #occ=...) تنزل مباشرة لقسم الهدايا
-  if (state.wishOnly || state.occ || state.rec) document.getElementById("gifts").scrollIntoView();
+  if (state.wishOnly || state.occ || state.rec || state.col) document.getElementById("gifts").scrollIntoView();
 }
 
 /* =========================================================
@@ -527,7 +555,7 @@ function toggleWish(id, btn){
   if (state.wishOnly) renderGrid();
 }
 function showWishlist(){
-  state.wishOnly = true; state.occ = ""; state.rec = ""; state.query = "";
+  state.wishOnly = true; state.occ = ""; state.rec = ""; state.col = ""; state.query = "";
   document.getElementById("search").value = "";
   renderChips(); renderGrid();
   document.getElementById("gifts").scrollIntoView({ behavior:"smooth" });
@@ -546,9 +574,37 @@ function setHero(){
 }
 
 /* =========================================================
+   الشريط المتحرك (الأصناف المختارة من الداشبورد)
+   ========================================================= */
+function renderBanner(){
+  if (!window.QadahBanner) return;
+  QadahBanner.mount(document.getElementById("bannerSec"), state.all.filter(p => p.in_banner),
+    { img: imgUrl, price: p => money(p.price), title: "من تشكيلتنا" });
+}
+
+/* =========================================================
+   فلتر اللون
+   ========================================================= */
+function swatch(c){ return c.hex ? `<span class="sw" style="background:${esc(c.hex)}"></span>` : `<span class="sw sw--mix"></span>`; }
+function renderColors(){
+  const box = document.getElementById("colorChips");
+  if (state.colors.length < 2 && !state.col){ box.hidden = true; return; }
+  box.hidden = false;
+  box.innerHTML = `<span class="colors__label">اللون:</span>` + state.colors.map(c =>
+    `<button type="button" class="cchip" data-col="${esc(c.id)}" aria-pressed="${!state.wishOnly && state.col === c.id}">${swatch(c)}${esc(c.name_ar)}</button>`
+  ).join("");
+}
+document.getElementById("colorChips").addEventListener("click", e => {
+  const b = e.target.closest("[data-col]"); if (!b) return;
+  state.col = state.col === b.dataset.col ? "" : b.dataset.col; state.wishOnly = false;
+  syncHash(); renderChips(); renderGrid();
+});
+
+/* =========================================================
    المناسبات و"لمن"
    ========================================================= */
 function renderChips(){
+  renderColors();
   const sec = document.getElementById("occasions");
   if (!state.occasions.length){ sec.hidden = true; return; }
   sec.hidden = false;
@@ -576,11 +632,13 @@ function syncHash(){
   const parts = [];
   if (state.occ) parts.push("occ=" + state.occ);
   if (state.rec) parts.push("rec=" + state.rec);
+  if (state.col) parts.push("col=" + state.col);
   history.replaceState(null, "", parts.length ? "#" + parts.join("&") : location.pathname + location.search);
 }
 function readHash(){
   const h = new URLSearchParams(location.hash.replace(/^#/, ""));
-  const o = h.get("occ"), r = h.get("rec");
+  const o = h.get("occ"), r = h.get("rec"), cl = h.get("col");
+  if (cl && state.colors.some(x => x.id === cl)) state.col = cl;
   if (o && state.occasions.some(x => x.id === o)) state.occ = o;
   if (r && state.recipients.some(x => x.id === r)) state.rec = r;
   if (location.hash === "#wish") state.wishOnly = true;
@@ -596,6 +654,7 @@ function visible(){
     if (state.wishOnly && !wish.includes(p.id)) return false;
     if (state.occ && !(p.occasion_ids||[]).includes(state.occ)) return false;
     if (state.rec && !(p.recipient_ids||[]).includes(state.rec)) return false;
+    if (state.col && !(p.color_ids||[]).includes(state.col)) return false;
     if (q && !`${p.name_ar||""} ${p.name_en||""} ${p.code||""}`.toLowerCase().includes(q)) return false;
     return true;
   });
@@ -603,9 +662,9 @@ function visible(){
 
 function gridTitle(){
   if (state.wishOnly) return "المفضلة";
-  const o = nameOf(state.occasions, state.occ), r = nameOf(state.recipients, state.rec);
-  if (o && r) return `${o} · ${r}`;
-  return o || r || "كل الهدايا";
+  const o = nameOf(state.occasions, state.occ), r = nameOf(state.recipients, state.rec), c = nameOf(state.colors, state.col);
+  const parts = [o, r, c].filter(Boolean);
+  return parts.length ? parts.join(" · ") : "كل الهدايا";
 }
 
 function cardHTML(p){
@@ -647,12 +706,12 @@ function renderGrid(){
   grid.classList.remove("skeleton");
   document.getElementById("gridTitle").textContent = gridTitle();
   document.getElementById("count").textContent = countWord(list.length);
-  document.getElementById("clearBtn").hidden = !(state.occ || state.rec || state.query || state.wishOnly);
+  document.getElementById("clearBtn").hidden = !(state.occ || state.rec || state.col || state.query || state.wishOnly);
 
   if (!list.length){
     grid.innerHTML = "";
     if (state.wishOnly) showState("لا توجد هدايا في المفضلة بعد", "اضغط على القلب في أي هدية لتحفظها هنا.");
-    else showState("لا توجد هدايا مطابقة", "جرّب مناسبة أخرى أو امسح البحث.", false, true);
+    else showState("لا توجد هدايا مطابقة", "جرّب مناسبة أو لوناً آخر، أو امسح البحث.", false, true);
     return;
   }
   document.getElementById("state").hidden = true;
@@ -672,7 +731,7 @@ document.getElementById("grid").addEventListener("click", e => {
 });
 
 function clearFilters(){
-  state.occ = ""; state.rec = ""; state.query = ""; state.wishOnly = false;
+  state.occ = ""; state.rec = ""; state.col = ""; state.query = ""; state.wishOnly = false;
   document.getElementById("search").value = "";
   syncHash(); renderChips(); renderGrid();
 }
