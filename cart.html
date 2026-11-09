@@ -142,6 +142,9 @@
   .form-section-title { font-weight:800; font-size:15px; color:var(--navy); margin:18px 0 10px;
     padding-bottom:6px; border-bottom:1px solid var(--line); }
   .form-error { color:var(--rose-strong); font-size:14px; font-weight:700; margin:8px 0 0; min-height:20px; }
+  .hint { color:var(--muted); font-size:13px; margin:-6px 0 12px; }
+  .btn-link { border:0; background:none; padding:0; font:inherit; font-weight:700;
+    color:var(--navy); text-decoration:underline; cursor:pointer; }
   .modal-actions { display:flex; gap:12px; margin-top:20px; }
   .btn-primary { flex:1; height:50px; border:0; border-radius:12px; background:var(--navy);
     color:var(--cream); font-family:inherit; font-weight:700; font-size:16px; cursor:pointer; }
@@ -297,25 +300,39 @@
         </div>
 
         <div class="form-section-title">التوصيل</div>
+        <p class="form-error" id="deliveryLoadError" style="display:none">
+          تعذّر تحميل خيارات التوصيل.
+          <button type="button" class="btn-link" id="retryDelivery">إعادة المحاولة</button>
+        </p>
+        <div class="field-row">
+          <div class="field">
+            <label for="d_gov">المحافظة <span class="req">*</span></label>
+            <select id="d_gov"><option value="">جارٍ التحميل…</option></select>
+          </div>
+          <div class="field">
+            <label for="d_area">المنطقة <span class="req">*</span></label>
+            <select id="d_area"><option value="">اختر المنطقة</option></select>
+          </div>
+        </div>
         <div class="field">
-          <label for="d_address">العنوان <span class="req">*</span></label>
-          <textarea id="d_address"></textarea>
+          <label for="d_landmark">أقرب نقطة دالة <span class="req">*</span></label>
+          <input id="d_landmark" type="text" maxlength="120" placeholder="مثال: قرب مجمع المنصور مول" />
+        </div>
+        <div class="field">
+          <label for="d_address">تفاصيل العنوان (اختياري)</label>
+          <textarea id="d_address" placeholder="الشارع، رقم الدار أو العمارة"></textarea>
         </div>
         <div class="field-row">
           <div class="field">
-            <label for="d_date">يوم التوصيل (اختياري)</label>
+            <label for="d_date">يوم التوصيل <span class="req">*</span></label>
             <input id="d_date" type="date" />
           </div>
           <div class="field">
-            <label for="d_slot">الفترة (اختياري)</label>
-            <select id="d_slot">
-              <option value="">اختر</option>
-              <option value="صباحًا">صباحًا</option>
-              <option value="ظهرًا">ظهرًا</option>
-              <option value="مساءً">مساءً</option>
-            </select>
+            <label for="d_slot">الفترة <span class="req">*</span></label>
+            <select id="d_slot"><option value="">اختر اليوم أولاً</option></select>
           </div>
         </div>
+        <p class="hint" id="sameDayHint" style="display:none"></p>
         <div class="field">
           <label for="d_notes">ملاحظات التوصيل (اختياري)</label>
           <textarea id="d_notes"></textarea>
@@ -528,13 +545,148 @@
     });
 
     // ===== إتمام الطلب (ربط فعلي بـ Edge Function create_order) =====
-    function openCheckout() {
-      $("formError").textContent = "";
+    // ----- خيارات التوصيل: المحافظات والمناطق والفترات تُقرأ من الداشبورد -----
+    const DELIVERY = { govs: [], areas: [], slots: [], settings: null, loaded: false };
+
+    async function restGet(path) {
+      const res = await fetch(SUPABASE_URL + "/rest/v1/" + path, {
+        headers: { apikey: SUPABASE_KEY, Authorization: "Bearer " + SUPABASE_KEY },
+      });
+      if (!res.ok) throw new Error(path + " " + res.status);
+      return res.json();
+    }
+
+    function fmtTime(t) { // "14:00:00" -> "2:00 م"
+      const h = parseInt(String(t).slice(0, 2), 10), m = String(t).slice(3, 5);
+      return (h % 12 || 12) + ":" + m + " " + (h >= 12 ? "م" : "ص");
+    }
+    function addDays(ymd, n) {
+      const d = new Date(ymd + "T12:00:00Z");
+      d.setUTCDate(d.getUTCDate() + n);
+      return d.toISOString().slice(0, 10);
+    }
+    // اليوم بتوقيت بغداد من الخادم (لا نعتمد على ساعة الجهاز)
+    function bagToday() { return (DELIVERY.settings && DELIVERY.settings.today) || todayStr(); }
+    function minDeliveryDate() {
+      const s = DELIVERY.settings;
+      if (s && s.same_day_open === false) return addDays(bagToday(), 1);
+      return bagToday();
+    }
+
+    async function loadDelivery() {
+      $("deliveryLoadError").style.display = "none";
+      try {
+        const [govs, areas, slots, st] = await Promise.all([
+          restGet("delivery_governorates_public?select=*&order=sort_order.asc"),
+          restGet("delivery_areas_public?select=*&order=sort_order.asc"),
+          restGet("delivery_slots_public?select=*&order=sort_order.asc,start_time.asc"),
+          restGet("delivery_settings_public?select=*"),
+        ]);
+        DELIVERY.govs = govs; DELIVERY.areas = areas; DELIVERY.slots = slots;
+        DELIVERY.settings = st[0] || null;
+        DELIVERY.loaded = true;
+        renderGovs();
+        setupDate();
+      } catch (e) {
+        console.error(e);
+        DELIVERY.loaded = false;
+        $("deliveryLoadError").style.display = "";
+      }
+    }
+
+    function renderGovs() {
+      const sel = $("d_gov");
+      sel.innerHTML = "";
+      DELIVERY.govs.forEach((g) => {
+        const o = document.createElement("option");
+        o.value = g.id;
+        o.textContent = g.is_active ? g.name_ar : g.name_ar + " (قريباً)";
+        o.disabled = !g.is_active;
+        sel.appendChild(o);
+      });
+      const def = DELIVERY.govs.find((g) => g.is_default && g.is_active) || DELIVERY.govs.find((g) => g.is_active);
+      if (def) sel.value = def.id; else sel.value = "";
+      renderAreas();
+    }
+
+    function renderAreas() {
+      const sel = $("d_area");
+      const gov = $("d_gov").value;
+      const list = DELIVERY.areas.filter((a) => a.governorate_id === gov);
+      sel.innerHTML = "";
+      const first = document.createElement("option");
+      first.value = "";
+      first.textContent = list.length ? "اختر المنطقة" : "لا توجد مناطق متاحة حالياً";
+      sel.appendChild(first);
+      list.forEach((a) => {
+        const o = document.createElement("option");
+        o.value = a.id; o.textContent = a.name_ar;
+        sel.appendChild(o);
+      });
+    }
+
+    function setupDate() {
       const dateEl = $("d_date");
-      if (dateEl) dateEl.min = todayStr(); // يمنع اختيار تاريخ سابق من المنتقي
+      const min = minDeliveryDate();
+      dateEl.min = min;
+      if (dateEl.value && dateEl.value < min) dateEl.value = "";
+      const s = DELIVERY.settings, hint = $("sameDayHint");
+      if (s && s.same_day_open === false) {
+        hint.textContent = s.same_day_enabled === false
+          ? "التوصيل بنفس اليوم غير متاح حالياً، أقرب يوم للتوصيل هو غداً."
+          : "انتهى وقت استقبال طلبات اليوم (آخر موعد " + fmtTime(s.same_day_cutoff) + ")، أقرب يوم للتوصيل هو غداً.";
+        hint.style.display = "";
+      } else { hint.style.display = "none"; }
+      renderSlots();
+    }
+
+    function renderSlots() {
+      const sel = $("d_slot"), prev = sel.value, date = $("d_date").value;
+      sel.innerHTML = "";
+      if (!date) {
+        sel.innerHTML = '<option value="">اختر اليوم أولاً</option>';
+        return;
+      }
+      const isToday = date === bagToday();
+      const nowT = DELIVERY.settings && DELIVERY.settings.now_time;
+      const first = document.createElement("option");
+      first.value = ""; first.textContent = "اختر الفترة";
+      sel.appendChild(first);
+      let any = false;
+      DELIVERY.slots.forEach((s) => {
+        const passed = isToday && nowT && String(s.end_time) <= String(nowT);
+        const o = document.createElement("option");
+        o.value = s.id;
+        o.textContent = s.name_ar + " (" + fmtTime(s.start_time) + " - " + fmtTime(s.end_time) + ")" + (passed ? " · انتهت" : "");
+        o.disabled = !!passed;
+        if (!passed) any = true;
+        sel.appendChild(o);
+      });
+      if (!DELIVERY.slots.length || !any) first.textContent = "لا توجد فترات متاحة لهذا اليوم";
+      if (prev && Array.from(sel.options).some((o) => o.value === prev && !o.disabled)) sel.value = prev;
+    }
+
+    $("d_gov").addEventListener("change", renderAreas);
+    $("d_date").addEventListener("change", renderSlots);
+    $("retryDelivery").addEventListener("click", loadDelivery);
+
+    // رسائل أخطاء الخادم بالعربي
+    const ORDER_ERRORS = {
+      slot_unavailable: "هذه الفترة لم تعد متاحة. اختر فترة أخرى.",
+      area_unavailable: "هذه المنطقة غير متاحة حالياً. اختر منطقة أخرى.",
+      same_day_unavailable: "التوصيل بنفس اليوم غير متاح حالياً. اختر يوماً آخر.",
+      same_day_cutoff_passed: "انتهى وقت طلبات اليوم. اختر يوم الغد أو بعده.",
+      slot_passed: "انتهت هذه الفترة لليوم. اختر فترة أخرى.",
+      missing_date: "الرجاء اختيار يوم التوصيل.",
+    };
+
+    async function openCheckout() {
+      $("formError").textContent = "";
       $("checkoutForm").style.display = "";
       $("checkoutSuccess").style.display = "none";
       $("checkoutModal").classList.add("show");
+      // نحدّث الوقت والفترات كل مرة تُفتح فيها النافذة
+      await loadDelivery();
     }
     function closeCheckout() {
       $("checkoutModal").classList.remove("show");
@@ -548,6 +700,14 @@
     $("checkoutModal").addEventListener("click", (e) => {
       if (e.target === $("checkoutModal")) closeCheckout(); // نقرة الخلفية تُغلق
     });
+
+    // العنوان النصي = المحافظة، المنطقة، التفاصيل + أقرب نقطة دالة (حتى يحفظها الخادم بدون تغيير)
+    function composeAddress() {
+      const sel = (id) => { const el = $(id); return el.value ? el.options[el.selectedIndex].textContent.replace(/\s*\(قريباً\)$/, "") : ""; };
+      const line1 = [sel("d_gov"), sel("d_area"), $("d_address").value.trim()].filter(Boolean).join("، ");
+      const lm = $("d_landmark").value.trim();
+      return line1 + (lm ? "\nأقرب نقطة دالة: " + lm : "");
+    }
 
     async function confirmOrder() {
       const lines = Cart.all(); // [{ id, qty }] — لا نرسل أي سعر
@@ -565,10 +725,11 @@
           phone: $("r_phone").value.trim(),
         },
         delivery: {
-          address: $("d_address").value.trim(),
+          address: composeAddress(),
           notes: $("d_notes").value.trim() || null,
           date: $("d_date").value || null,
-          slot: $("d_slot").value || null,
+          slot_id: $("d_slot").value || null,
+          area_id: $("d_area").value || null,
         },
         gift_message: $("gift").value.trim() || null,
         addons: [],
@@ -581,12 +742,17 @@
       if (!payload.recipient.name || !payload.recipient.phone) {
         $("formError").textContent = "الرجاء إدخال اسم المستلم وهاتفه"; return;
       }
-      if (!payload.delivery.address) {
-        $("formError").textContent = "الرجاء إدخال عنوان التوصيل"; return;
+      if (!DELIVERY.loaded) {
+        $("formError").textContent = "خيارات التوصيل غير محمّلة. اضغط إعادة المحاولة أعلاه."; return;
       }
-      if (payload.delivery.date && payload.delivery.date < todayStr()) {
-        $("formError").textContent = "لا يمكن اختيار تاريخ توصيل في الماضي"; return;
+      if (!$("d_gov").value) { $("formError").textContent = "الرجاء اختيار المحافظة"; return; }
+      if (!payload.delivery.area_id) { $("formError").textContent = "الرجاء اختيار المنطقة"; return; }
+      if (!$("d_landmark").value.trim()) { $("formError").textContent = "الرجاء كتابة أقرب نقطة دالة"; return; }
+      if (!payload.delivery.date) { $("formError").textContent = "الرجاء اختيار يوم التوصيل"; return; }
+      if (payload.delivery.date < minDeliveryDate()) {
+        $("formError").textContent = "اليوم المختار غير متاح. اختر " + (minDeliveryDate() === bagToday() ? "اليوم أو بعده" : "الغد أو بعده"); return;
       }
+      if (!payload.delivery.slot_id) { $("formError").textContent = "الرجاء اختيار فترة التوصيل"; return; }
 
       const btn = $("confirmOrder");
       const label = btn.textContent;
@@ -607,7 +773,9 @@
         });
         const data = await res.json().catch(() => ({}));
         if (!res.ok || !data.ok) {
-          $("formError").textContent = "تعذّر إنشاء الطلب. " + (data.message || ("رمز " + res.status));
+          $("formError").textContent = ORDER_ERRORS[data.error]
+            || ("تعذّر إنشاء الطلب. " + (data.message || ("رمز " + res.status)));
+          if (ORDER_ERRORS[data.error]) loadDelivery(); // الإعدادات تغيّرت، نحدّث القوائم
           return;
         }
         const o = data.order;
