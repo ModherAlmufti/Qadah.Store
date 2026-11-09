@@ -678,6 +678,10 @@
       same_day_cutoff_passed: "انتهى وقت طلبات اليوم. اختر يوم الغد أو بعده.",
       slot_passed: "انتهت هذه الفترة لليوم. اختر فترة أخرى.",
       missing_date: "الرجاء اختيار يوم التوصيل.",
+      missing_slot: "الرجاء اختيار فترة التوصيل.",
+      missing_area: "الرجاء اختيار المنطقة.",
+      missing_landmark: "الرجاء كتابة أقرب نقطة دالة.",
+      governorate_unavailable: "هذه المحافظة غير متاحة للتوصيل حالياً.",
     };
 
     async function openCheckout() {
@@ -730,6 +734,8 @@
           date: $("d_date").value || null,
           slot_id: $("d_slot").value || null,
           area_id: $("d_area").value || null,
+          governorate_id: $("d_gov").value || null,
+          landmark: $("d_landmark").value.trim() || null,
         },
         gift_message: $("gift").value.trim() || null,
         addons: [],
